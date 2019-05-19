@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>user</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
+</head>
+<body class="container">
+<script>
+  function getUpgradeBadgeInfo(){
+         var ele = document.getElementById("upgradeBadge");
+         var op = ele.options[ele.selectedIndex];
+         console.log(op);
+         document.getElementById("upgradeBadgeId").value=op.value;
+         document.getElementById("upgradeBadgeTitle").value=op.text;
+  }
+</script>
+<br/>
+<h1>修改用户</h1>
+<br/><br/>
+<div class="with:80%">
+    <form class="form-horizontal"   th:action="@{/editActivity}" th:object="${activity}"  method="post">
+        <input type="hidden" name="id" th:value="*{id}" />
+        <div class="form-group">
+            <label for="creator" class="col-sm-2 control-label">Creator</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="creator"  id="creator" th:value="*{creator}" placeholder="creator"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="title"  id="title" th:value="*{title}" placeholder="title"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="icon" class="col-sm-2 control-label" >Icon</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="icon" id="icon" th:value="*{icon}" placeholder="icon"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="description"  id="description" th:value="*{description}" placeholder="description"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="requiredAttendanceTimes" class="col-sm-2 control-label">Required Condition</label>
+            <div class="col-sm-10">
+            	<input type="number" class="requiredAttendanceTimes" name="requiredAttendanceTimes" id="requiredAttendanceTimes" th:value="*{requiredAttendanceTimes}" placeholder="requiredAttendanceTimes"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="Submit" class="btn btn-info" />
+                &nbsp; &nbsp; &nbsp;
+                <a href="/toAddActivity" th:href="@{/listActivity}" class="btn btn-info">Back</a>
+            </div>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

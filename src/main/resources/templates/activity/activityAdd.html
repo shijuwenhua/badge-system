@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>user</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
+</head>
+<body class="container">
+<script>
+  function getUpgradeBadgeInfo(){
+         var ele = document.getElementById("upgradeBadge");
+         var op = ele.options[ele.selectedIndex];
+         console.log(op);
+         document.getElementById("upgradeBadgeId").value=op.value;
+  }
+  function reset(){
+         document.getElementById("upgradeBadgeId").value=0;
+  }
+</script>
+<br/>
+<h1>添加活动</h1>
+<br/><br/>
+<div class="with:80%">
+    <form class="form-horizontal"   th:action="@{/addActivity}"  method="post">
+        <div class="form-group">
+            <label for="creator" class="col-sm-2 control-label">Creator</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="creator"  id="creator" placeholder="creator"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="title"  id="title" placeholder="title"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="description"  id="description" placeholder="description"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="icon" class="col-sm-2 control-label" >Icon</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="icon" id="icon" placeholder="icon"/>
+            </div>
+        </div>
+        <div class="form-group ">
+	        <label for="upgradeBadge" class="col-sm-2 control-label">勋章类别</label>
+	        <div class="col-sm-10">
+	            <select id="upgradeBadge" class="form-control" name="upgradeBadge" onchange="getUpgradeBadgeInfo()">
+	                <option>请选择勋章</option>
+	                <option  th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
+	            </select>
+	        </div>
+	    </div>
+	    <div class="form-group ">
+	        <label for="requiredActivity" class="col-sm-2 control-label">勋章重要活动</label>
+	        <div class="col-sm-10">
+	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="yes" checked="checked"/>
+	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="no"/>
+	        </div>
+	    </div>
+	    <div class="form-group">
+            <label for="requiredAttendTimes" class="col-sm-2 control-label" >Required Attendance Times</label>
+            <div class="col-sm-10">
+                <input type="number" class="requiredAttendTimes" name="requiredAttendTimes" id="requiredAttendTimes" placeholder="requiredAttendanceTimes"/>
+            </div>
+        </div>
+        <input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId" value="0" placeholder="upgradeBadgeId"/>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="Submit" class="btn btn-info" />
+                &nbsp; &nbsp; &nbsp;
+                <input type="reset" value="Reset" class="btn btn-info" onclick="reset()"/>
+            </div>
+
+        </div>
+    </form>
+</div>
+</body>
+</html>

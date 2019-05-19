@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>activityList</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
+</head>
+<body class="container">
+<br/>
+<h1>活动列表</h1>
+<br/><br/>
+<div class="with:80%">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Activity Id</th>
+            <th>creator</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Icon</th>
+            <th>AttendaceTimes</th>
+            <th>Status</th>
+            <th>Required Activity</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="activity : ${activitys}">
+            <th scope="row" th:text="${activity.id}">1</th>
+            <td th:text="${activity.creator}">neo</td>
+            <td th:text="${activity.title}">neo</td>
+            <td th:text="${activity.description}">Otto</td>
+            <td th:text="${activity.icon}">icon</td>
+            <td th:text="${activity.requiredAttendTimes}">6</td>
+            <td><a th:href="@{/toEditActivity(id=${activity.id})}">edit</a></td>
+            <td><a th:href="@{/deleteActivity(id=${activity.id})}">delete</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <div class="col-sm-2 control-label">
+        <a href="/toAddActivity" th:href="@{/toAddActivity}" class="btn btn-info">add</a>
+    </div>
+</div>
+
+</body>
+</html>
