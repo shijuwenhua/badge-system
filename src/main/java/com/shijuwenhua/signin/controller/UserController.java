@@ -49,7 +49,20 @@ public class UserController {
     @Autowired
     private BadgeService badgeService;
     
-    private DtoMapper dtoMapper = new DtoMapper();
+	private DtoMapper dtoMapper = new DtoMapper();
+	
+
+    @RequestMapping(value = "/auth")
+	public String auth(@PathVariable(value = "code", required = true) String code) {
+        WeChatSession wechatInfo = LoginUtils.login(code);
+        HttpSession session = request.getSession();
+        session.setAttribute("openid", wechatInfo.getOpenid());
+        session.setAttribute("session_key", wechatInfo.getSession_key());
+        System.out.println("openId: " + wechatInfo.getOpenid());
+        System.out.println("session_key: " + wechatInfo.getSession_key());
+        String sessionId = request.getSession().getId();
+		return sessionId;
+    }
 
     @RequestMapping("/getAllUsers")
     @ResponseBody
