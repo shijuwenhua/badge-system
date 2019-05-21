@@ -9,68 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-import org.tmc.digitaltmc.modal.WeChatSession;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
  
 public class LoginUtils{
  
-	 private static final long serialVersionUID = 1L;
-	
-	 private static final String APPID = "wxfdef7ebe2a985224";  
-	 private static final String SECRET = "3ce63e12fcc44c8b73e54ccffd98e0bb";
-     
-    //  public static JSONObject getUserInfo(String encryptedData, String sessionKey, String iv){
-    //     // 被加密的数据
-    //     byte[] dataByte = Base64.getDecoder().decode(encryptedData);
-    //     // 加密秘钥
-    //     byte[] keyByte = Base64.decode(sessionKey);
-    //     // 偏移量
-    //     byte[] ivByte = Base64.decode(iv);
+    private static final long serialVersionUID = 1L;
 
-    //     try {
-    //         // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
-    //         int base = 16;
-    //         if (keyByte.length % base != 0) {
-    //             int groups = keyByte.length / base + (keyByte.length % base != 0 ? 1 : 0);
-    //             byte[] temp = new byte[groups * base];
-    //             Arrays.fill(temp, (byte) 0);
-    //             System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
-    //             keyByte = temp;
-    //         }
-    //         // 初始化
-    //         Security.addProvider(new BouncyCastleProvider());
-    //         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding","BC");
-    //         SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
-    //         AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
-    //         parameters.init(new IvParameterSpec(ivByte));
-    //         cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
-    //         byte[] resultByte = cipher.doFinal(dataByte);
-    //         if (null != resultByte && resultByte.length > 0) {
-    //             String result = new String(resultByte, "UTF-8");
-    //             return JSONObject.fromObject(result);
-    //         }
-    //     } catch (NoSuchAlgorithmException e) {
-    //         e.printStackTrace();
-    //     } catch (NoSuchPaddingException e) {
-    //         e.printStackTrace();
-    //     } catch (InvalidParameterSpecException e) {
-    //         e.printStackTrace();
-    //     } catch (IllegalBlockSizeException e) {
-    //         e.printStackTrace();
-    //     } catch (BadPaddingException e) {
-    //         e.printStackTrace();
-    //     } catch (UnsupportedEncodingException e) {
-    //         e.printStackTrace();
-    //     } catch (InvalidKeyException e) {
-    //         e.printStackTrace();
-    //     } catch (InvalidAlgorithmParameterException e) {
-    //         e.printStackTrace();
-    //     } catch (NoSuchProviderException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return null;
-    // }
+    private static final String APPID = "wxfdef7ebe2a985224";  
+    private static final String SECRET = "3ce63e12fcc44c8b73e54ccffd98e0bb";
 
     public static String getSha1(String str){
         if(StringUtils.isEmpty(str)){
@@ -96,7 +46,7 @@ public class LoginUtils{
     }
 
 	 //获取凭证校检接口
-	 public static WeChatSession login(String code)  
+	 public static String getOpenId(String code)  
 	 {
 		 //微信的接口
 		 String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+
@@ -107,16 +57,31 @@ public class LoginUtils{
 		 //根据返回值进行后续操作 
 	     if(responseEntity != null && responseEntity.getStatusCode() == HttpStatus.OK) {
             String sessionData = responseEntity.getBody();
-            Gson gson = new Gson();
-            //解析从微信服务器获得的openid和session_key;
-            WeChatSession weChatSession = gson.fromJson(sessionData,WeChatSession.class);
-            //获取用户的唯一标识
-            String openid = weChatSession.getOpenid();
-            //获取会话秘钥
-            String session_key = weChatSession.getSession_key();
-            return weChatSession;
+            JsonParser parser =new JsonParser(); 
+            // Gson gson = new Gson();
+            // //解析从微信服务器获得的openid和session_key;
+            // WeChatSession weChatSession = gson.fromJson(sessionData,WeChatSession.class);
+            // //获取用户的唯一标识
+            // String openid = weChatSession.getOpenid();
+            // //获取会话秘钥
+            // String session_key = weChatSession.getSession_key();
+            // return weChatSession;
+            JsonObject result = parser.parse(sessionData).getAsJsonObject();
+            JsonElement openId = result.get("openid");
+            if ( null != result.get("openid")){
+                return openId.getAsString();
+            }else {
+                String errCode = result.get("errcode").getAsString();
+                String errMsg = result.get("errmsg").getAsString();
+                System.out.println("errcode: " + errCode + ", errmsg: " + errMsg);
+                return null;
+            }
          }else{
             return null;
          }		
-	 }
+     }
+    //  public static void main(String arg[]){
+    //     String o = getOpenId("aaa");
+    //     System.out.println(o);
+    //  }
 }
