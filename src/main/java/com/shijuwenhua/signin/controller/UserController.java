@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shijuwenhua.signin.constant.StatusConstants;
@@ -26,7 +27,7 @@ import com.shijuwenhua.signin.service.ActivityService;
 import com.shijuwenhua.signin.service.BadgeService;
 import com.shijuwenhua.signin.service.UserActivityService;
 import com.shijuwenhua.signin.service.UserService;
-
+import com.shijuwenhua.signin.utils.LoginUtils;
 
 @Controller
 public class UserController {
@@ -50,6 +51,13 @@ public class UserController {
     private BadgeService badgeService;
     
     private DtoMapper dtoMapper = new DtoMapper();
+
+    @RequestMapping("/getOpenId")
+    @ResponseBody
+    public String getOpenIdfromCode(@RequestParam(value = "code", required = true) String code) {
+    	String openId = LoginUtils.getOpenId(code);
+    	return openId;
+    }
 
     @RequestMapping("/getAllUsers")
     @ResponseBody
