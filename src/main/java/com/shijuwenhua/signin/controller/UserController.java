@@ -27,7 +27,7 @@ import com.shijuwenhua.signin.service.ActivityService;
 import com.shijuwenhua.signin.service.BadgeService;
 import com.shijuwenhua.signin.service.UserActivityService;
 import com.shijuwenhua.signin.service.UserService;
-import com.shijuwenhua.signin.utils.LoginUtils;;
+import com.shijuwenhua.signin.utils.LoginUtils;
 
 @Controller
 public class UserController {
@@ -50,14 +50,13 @@ public class UserController {
     @Autowired
     private BadgeService badgeService;
     
-	private DtoMapper dtoMapper = new DtoMapper();
-	
+    private DtoMapper dtoMapper = new DtoMapper();
 
-	@RequestMapping("/getOpenId")
-	@ResponseBody
-	public String getOpenIdfromCode(@RequestParam(value = "code", required = true) String code) {
-        String openId = LoginUtils.getOpenId(code);
-		return openId;
+    @RequestMapping("/getOpenId")
+    @ResponseBody
+    public String getOpenIdfromCode(@RequestParam(value = "code", required = true) String code) {
+    	String openId = LoginUtils.getOpenId(code);
+    	return openId;
     }
 
     @RequestMapping("/getAllUsers")
