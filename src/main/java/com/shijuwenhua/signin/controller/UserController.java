@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shijuwenhua.signin.constant.StatusConstants;
@@ -26,7 +27,7 @@ import com.shijuwenhua.signin.service.ActivityService;
 import com.shijuwenhua.signin.service.BadgeService;
 import com.shijuwenhua.signin.service.UserActivityService;
 import com.shijuwenhua.signin.service.UserService;
-
+import com.shijuwenhua.signin.utils.LoginUtils;;
 
 @Controller
 public class UserController {
@@ -52,16 +53,11 @@ public class UserController {
 	private DtoMapper dtoMapper = new DtoMapper();
 	
 
-    @RequestMapping(value = "/auth")
-	public String auth(@PathVariable(value = "code", required = true) String code) {
-        WeChatSession wechatInfo = LoginUtils.login(code);
-        HttpSession session = request.getSession();
-        session.setAttribute("openid", wechatInfo.getOpenid());
-        session.setAttribute("session_key", wechatInfo.getSession_key());
-        System.out.println("openId: " + wechatInfo.getOpenid());
-        System.out.println("session_key: " + wechatInfo.getSession_key());
-        String sessionId = request.getSession().getId();
-		return sessionId;
+	@RequestMapping("/getOpenId")
+	@ResponseBody
+	public String getOpenIdfromCode(@RequestParam(value = "code", required = true) String code) {
+        String openId = LoginUtils.getOpenId(code);
+		return openId;
     }
 
     @RequestMapping("/getAllUsers")
