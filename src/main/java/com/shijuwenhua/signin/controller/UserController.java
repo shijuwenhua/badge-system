@@ -159,15 +159,43 @@ public class UserController {
 		return "redirect:/list";
 	}
 
+	@RequestMapping("/joinActivity/{openId}/{activityId}")
+	@ResponseBody
+	public BadgeDetail joinActivity(@PathVariable("openId") String userOpenId,
+			@PathVariable("activityId") Long activityId) throws Exception {
+		
+		Badge badge = checkBadgeIsExist(activityId);
+
+		checkAndCreateUserActivity(userOpenId, activityId, badge);
+		
+		return getUserBadgesDetail(userOpenId, badge.getId());
+	}
+	
 	@RequestMapping("/attendActivity/{openId}/{activityId}")
 	@ResponseBody
-	public String attendActivity(@PathVariable("openId") String userOpenId,
-			@PathVariable("activityId") Long activityId) {
+	public BadgeDetail attendActivity(@PathVariable("openId") String userOpenId,
+			@PathVariable("activityId") Long activityId) throws Exception {
 
-		Badge badge = badgeService.findBadgesByActivityId(activityId);
-		if (badge == null)
-			return "Cannot find the activity related badge";
+		Badge badge = checkBadgeIsExist(activityId);
 
+		UserActivity userActivity = checkAndCreateUserActivity(userOpenId, activityId, badge);
+		
+		userActivity.setAttendTimes(userActivity.getAttendTimes() + 1);
+		
+		if (StatusConstants.PROCESSING.equals(userActivity.getStatus())) {
+			String activityStatus = activityService.checkActivityStatus(activityId, userActivity.getAttendTimes());
+			userActivity.setStatus(activityStatus);
+			if (StatusConstants.COMPLETED.equals(activityStatus)) {
+				userActivity.setAchievementTime(LocalDateTime.now().format(formatter));
+				checkBadge(badge.getId(), badge.getCompletedRequiredActivities(), activityStatus, userOpenId);
+			}
+		}
+		userActivityService.save(userActivity);
+
+		return getUserBadgesDetail(userOpenId, badge.getId());
+	}
+
+	private UserActivity checkAndCreateUserActivity(String userOpenId, Long activityId, Badge badge) {
 		User user = userService.findUserByOpenId(userOpenId);
 		UserActivity userActivity = new UserActivity();
 
@@ -181,21 +209,16 @@ public class UserController {
 			userActivity = userActivityService.findByUserIdAndActivityId(activityId, userOpenId);
 			if (userActivity == null) {
 				userActivity = attendActivityAndBadge(userOpenId, activityId, badge);
-			} else {
-				userActivity.setAttendTimes(userActivity.getAttendTimes() + 1);
 			}
 		}
-		if (StatusConstants.PROCESSING.equals(userActivity.getStatus())) {
-			String activityStatus = activityService.checkActivityStatus(activityId, userActivity.getAttendTimes());
-			userActivity.setStatus(activityStatus);
-			if (StatusConstants.COMPLETED.equals(activityStatus)) {
-				userActivity.setAchievementTime(LocalDateTime.now().format(formatter));
-				checkBadge(badge.getId(), badge.getCompletedRequiredActivities(), activityStatus, userOpenId);
-			}
-		}
-		userActivityService.save(userActivity);
+		return userActivity;
+	}
 
-		return "Attend the activity successfully";
+	private Badge checkBadgeIsExist(Long activityId) throws Exception {
+		Badge badge = badgeService.findBadgesByActivityId(activityId);
+		if (badge == null)
+			throw new Exception("Cannot find the activity related badge");
+		return badge;
 	}
 
 	private void checkBadge(long badgeId, int completedRequiredActivities, String activityStatus, String userOpenId) {

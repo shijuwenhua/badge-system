@@ -18,9 +18,8 @@
             <th>Title</th>
             <th>Description</th>
             <th>Icon</th>
-            <th>AttendaceTimes</th>
-            <th>Status</th>
-            <th>Required Activity</th>
+            <th>Required Attend Times</th>
+            <th>Type</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -33,6 +32,7 @@
             <td th:text="${activity.description}">Otto</td>
             <td th:text="${activity.icon}">icon</td>
             <td th:text="${activity.requiredAttendTimes}">6</td>
+            <td th:text="${activity.type}">6</td>
             <td><a th:href="@{/toEditActivity(id=${activity.id})}">edit</a></td>
             <td><a th:href="@{/deleteActivity(id=${activity.id})}">delete</a></td>
         </tr>

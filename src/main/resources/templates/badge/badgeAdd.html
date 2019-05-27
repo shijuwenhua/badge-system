@@ -21,8 +21,6 @@
 		function normal() {
 			document.getElementById("high").style.display="none";
 			document.getElementById("normal").style.display="";
-			document.getElementById("upgradeBadgeId").value = 0;
-			document.getElementById("upgradeBadgeTitle").value = "无";
 			document.getElementById("upgradeRequiredTimes").value = 0;
 		}
 		function high() {
@@ -65,37 +63,33 @@
 					<input type="radio" th:name="badgeType" th:value="highLevel" onclick="high()"/>high level
 				</div>
 			</div>
+			<div class="form-group ">
+				<label for="upgradeBadge" class="col-sm-2 control-label">下一级勋章</label>
+				<div class="col-sm-10">
+					<select id="upgradeBadge" class="form-control" name="upgradeBadge"
+						onchange="getUpgradeBadgeInfo()">
+						<option>请选择勋章</option>
+						<option th:each="badge:${badges}" th:value="${badge.id}"
+							th:text="${badge.title}"></option>
+					</select>
+				</div>
+			</div>
 			<div class="form-group" id="normal">
 				<label for="completedRequiredActivities" class="col-sm-2 control-label">参与完成活动数量</label>
 				<div class="col-sm-10">
-					<input type="number" class="form-control" name="completedRequiredActivities"
-						id="completedRequiredActivities" placeholder="completedRequiredActivities" />
+					<input type="number" class="form-control" name="completedRequiredActivities" th:value=0 id="completedRequiredActivities" placeholder="completedRequiredActivities" />
 				</div>
 			</div>
 			<div id="high" style="display:none;">
-				<div class="form-group ">
-					<label for="upgradeBadge" class="col-sm-2 control-label">下一级勋章</label>
-					<div class="col-sm-10">
-						<select id="upgradeBadge" class="form-control" name="upgradeBadge"
-							onchange="getUpgradeBadgeInfo()">
-							<option>请选择勋章</option>
-							<option th:each="badge:${badges}" th:value="${badge.id}"
-								th:text="${badge.title}"></option>
-						</select>
-					</div>
-				</div>
 				<div class="form-group">
 					<label for="upgradeRequiredTimes" class="col-sm-2 control-label">升级勋章累计勋章数</label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" name="upgradeRequiredTimes"
-							id="upgradeRequiredTimes" placeholder="upgradeRequiredTimes" />
+						<input type="number" class="form-control" name="upgradeRequiredTimes" th:value=0 id="upgradeRequiredTimes" placeholder="upgradeRequiredTimes" />
 					</div>
 				</div>
 			</div>
-			<input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId"
-				value="0" placeholder="upgradeBadgeId" /> <input type="hidden"
-				id="upgradeBadgeTitle" name="upgradeBadgeTitle" value=""
-				placeholder="upgradeBadgeTitle" />
+			<input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId" value="0" placeholder="upgradeBadgeId" />
+			<input type="hidden" id="upgradeBadgeTitle" name="upgradeBadgeTitle" value="" placeholder="upgradeBadgeTitle" />
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 					<input type="submit" value="Submit" class="btn btn-info" /> &nbsp;

@@ -16,6 +16,9 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
 	
 	@Query("select t from Badge t where t.completedRequiredActivities = 0 and t.id != ?1 and t.upgradeBadgeId != ?1")
 	List<Badge> getEditBadgesList(long id);
+	
+	@Query("select t from Badge t where t.completedRequiredActivities != 0")
+	List<Badge> getActivityEditBadgesList();
 
 	@Query("select new com.shijuwenhua.signin.model.BadgeDto(b) from Badge b where b.upgradeBadgeId = ?1")
 	List<BadgeDto> getSubBadgesList(long id);

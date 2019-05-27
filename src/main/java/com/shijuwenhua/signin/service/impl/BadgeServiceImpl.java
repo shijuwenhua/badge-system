@@ -64,6 +64,12 @@ public class BadgeServiceImpl implements BadgeService{
 		// TODO Auto-generated method stub
 		return badgeRepository.getEditBadgesList(badgeId);
 	}
+	
+	@Override
+	public List<Badge> getActivityEditBadgesList() {
+		// TODO Auto-generated method stub
+		return badgeRepository.getActivityEditBadgesList();
+	}
 
 	@Override
 	public List<BadgeDto> getSubBadgesList(long id) {

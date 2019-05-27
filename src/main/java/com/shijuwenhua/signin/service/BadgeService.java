@@ -33,4 +33,6 @@ public interface BadgeService {
 	List<Badge> getHighBadges();
 
 	List<Badge> getSubBadges(long id);
+
+	List<Badge> getActivityEditBadgesList();
 }
