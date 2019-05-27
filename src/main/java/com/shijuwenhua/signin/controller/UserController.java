@@ -55,8 +55,16 @@ public class UserController {
     @RequestMapping("/getOpenId")
     @ResponseBody
     public String getOpenIdfromCode(@RequestParam(value = "code", required = true) String code) {
-    	String openId = LoginUtils.getOpenId(code);
-    	return openId;
+		String openId = LoginUtils.getOpenId(code);
+		if (openId != null){
+			User user = userService.findUserByOpenId(openId);
+			if (user == null){
+				user = new User();
+				user.setOpenId(openId);
+				userService.save(user);
+			}
+		}
+		return openId;
     }
 
     @RequestMapping("/getAllUsers")
