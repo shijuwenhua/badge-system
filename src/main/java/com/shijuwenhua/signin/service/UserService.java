@@ -24,5 +24,4 @@ public interface UserService {
 
 	List<Badge> findBadgesByUserId(String userOpenId);
 
-
 }

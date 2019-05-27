@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.Badge;
 import com.shijuwenhua.signin.model.User;
-import com.shijuwenhua.signin.repository.ActivityBadgeRepository;
+import com.shijuwenhua.signin.model.ActivityDto;
 import com.shijuwenhua.signin.repository.ActivityRepository;
 import com.shijuwenhua.signin.service.ActivityService;
 
@@ -66,6 +66,18 @@ public class ActivityServiceImpl implements ActivityService{
 			return "Compeleted";
 		}
 		return "Processing";
+	}
+	
+	@Override
+	public List<Activity> findActivitiesByBadgeId(long badgeId) {
+		// TODO Auto-generated method stub
+		return activityRepository.findActivitiesByBadgeId(badgeId);
+	}
+	
+	@Override
+	public List<ActivityDto> findActivitiesDtoByBadgeId(long badgeId) {
+		// TODO Auto-generated method stub
+		return activityRepository.findActivitiesDtoByBadgeId(badgeId);
 	}
 
 }

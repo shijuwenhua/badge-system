@@ -31,6 +31,9 @@ public class Activity {
 	//completed activity attendance times
 	@Column(nullable = false)
 	private int requiredAttendTimes;
+	
+	@Column(nullable = false)
+	private String type;
 
 	public long getId() {
 		return id;
@@ -78,5 +81,13 @@ public class Activity {
 
 	public void setRequiredAttendTimes(int requiredAttendTimes) {
 		this.requiredAttendTimes = requiredAttendTimes;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

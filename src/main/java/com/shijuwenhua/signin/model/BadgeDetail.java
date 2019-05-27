@@ -1,6 +1,9 @@
 package com.shijuwenhua.signin.model;
 
-public class BadgeDto {
+import java.util.List;
+
+public class BadgeDetail {
+	
 	private long id;
 	private String title;
 	private String description;
@@ -9,33 +12,8 @@ public class BadgeDto {
 	private Long upgradeBadgeId;
 	private String upgradeBadgeTitle;
 	private int completedRequiredActivities;
-	private String achievementTime;
-	private String status;
-	
-	
-	public BadgeDto(Badge badge, String achievementTime, String status) {
-		this.id = badge.getId();
-		this.title = badge.getTitle();
-		this.description = badge.getDescription();
-		this.icon = badge.getIcon();
-		this.upgradeRequiredTime = badge.getUpgradeRequiredTimes();
-		this.upgradeBadgeId = badge.getUpgradeBadgeId();
-		this.upgradeBadgeTitle = badge.getUpgradeBadgeTitle();
-		this.achievementTime = achievementTime;
-		this.status = status;
-		this.completedRequiredActivities = badge.getCompletedRequiredActivities();
-	}
-	
-	public BadgeDto(Badge badge) {
-		this.id = badge.getId();
-		this.title = badge.getTitle();
-		this.description = badge.getDescription();
-		this.icon = badge.getIcon();
-		this.upgradeRequiredTime = badge.getUpgradeRequiredTimes();
-		this.upgradeBadgeId = badge.getUpgradeBadgeId();
-		this.upgradeBadgeTitle = badge.getUpgradeBadgeTitle();
-		this.completedRequiredActivities = badge.getCompletedRequiredActivities();
-	}
+	private List<ActivityDto> userActivityList;
+	private List<BadgeDto> badgeList;
 
 	public long getId() {
 		return id;
@@ -85,6 +63,10 @@ public class BadgeDto {
 		this.upgradeBadgeId = upgradeBadgeId;
 	}
 
+	public String getUpgradeBadgeTitle() {
+		return upgradeBadgeTitle;
+	}
+
 	public int getCompletedRequiredActivities() {
 		return completedRequiredActivities;
 	}
@@ -93,28 +75,23 @@ public class BadgeDto {
 		this.completedRequiredActivities = completedRequiredActivities;
 	}
 
-	public String getUpgradeBadgeTitle() {
-		return upgradeBadgeTitle;
-	}
-
 	public void setUpgradeBadgeTitle(String upgradeBadgeTitle) {
 		this.upgradeBadgeTitle = upgradeBadgeTitle;
 	}
 
-	public String getAchievementTime() {
-		return achievementTime;
+	public List<ActivityDto> getUserActivityList() {
+		return userActivityList;
 	}
 
-	public void setAchievementTime(String achievementTime) {
-		this.achievementTime = achievementTime;
+	public void setUserActivityList(List<ActivityDto> userActivityList) {
+		this.userActivityList = userActivityList;
 	}
 
-	public String getStatus() {
-		return status;
+	public List<BadgeDto> getBadgeList() {
+		return badgeList;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setBadgeList(List<BadgeDto> badgeList) {
+		this.badgeList = badgeList;
 	}
-
 }

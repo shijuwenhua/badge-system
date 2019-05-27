@@ -1,6 +1,7 @@
 package com.shijuwenhua.signin.controller;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,17 @@ public class BadgeController {
     @RequestMapping("/getAllBadges")
     @ResponseBody
     public List<Badge> getAllBadges() {
-        return badgeService.getBadgeList();
+        return badgeService.getAllBadges();
+    }
+    
+    @RequestMapping("/getAllSubBadges/{id}")
+    @ResponseBody
+    public List<Badge> getAllSubBadges(@PathVariable("id") Long id) {
+    	ConcurrentHashMap<Long, List<Badge>> allSubBadges = new ConcurrentHashMap<Long, List<Badge>>();
+    	Badge badge = badgeService.findBadgeById(id);
+    	List<Badge> badges = badgeService.getSubBadges(id);
+    	allSubBadges.put(id, badges);
+    	return badges;
     }
     
     @RequestMapping("/createBadge")
@@ -39,14 +50,14 @@ public class BadgeController {
     
     @RequestMapping("/listBadge")
     public String list(Model model) {
-        List<Badge> badges =badgeService.getBadgeList();
+        List<Badge> badges =badgeService.getAllBadges();
         model.addAttribute("badges", badges);
         return "badge/badgeList";
     }
 
     @RequestMapping("/toAddBadge")
     public String toAdd(Model model) {
-    	List<Badge> badges = badgeService.getBadgeList();
+    	List<Badge> badges = badgeService.getHighBadges();
     	model.addAttribute("badges", badges);
         return "badge/badgeAdd";
     }
@@ -63,6 +74,7 @@ public class BadgeController {
         List<Badge> editBadgesList = badgeService.getEditBadgeList(id);
     	model.addAttribute("editBadges", editBadgesList);
         model.addAttribute("badge", badge);
+        model.addAttribute("highLevel", badge.getCompletedRequiredActivities()==0?true:false);
         return "badge/badgeEdit";
     }
 

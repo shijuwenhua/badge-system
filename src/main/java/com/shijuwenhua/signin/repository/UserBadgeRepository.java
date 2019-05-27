@@ -12,8 +12,8 @@ public interface UserBadgeRepository extends JpaRepository<UserBadge, Long> {
 
 //	UserBadge findByUserId(String userOpenId);
     
-	@Query("select t from UserBadge t where t.badgeId = ?1")
-	UserBadge findByBadgeId(long badgeId);
+	@Query("select ub from UserBadge ub where ub.badgeId = ?1 and ub.userOpenId = ?2")
+	UserBadge findByBadgeId(long badgeId, String userOpenId);
 
 //    void deleteByUserId(String userOpenId);
     
@@ -21,4 +21,7 @@ public interface UserBadgeRepository extends JpaRepository<UserBadge, Long> {
     
     @Query("select t from Badge t, UserBadge ub where t.id = ub.badgeId and ub.userOpenId = ?1")
 	List<Badge> findBadgesByUserId(String userOpenId);
+    
+//    @Query("select new com.shijuwenhua.signin.model.UserBadgeInfo(ub, b) from UserBadge ub, Badge b where b.id = ?1 and ub.badgeId = b.upgradeBadgeId")
+//	UserBadgeInfo findUserUpgradeBadge(long badgeId, String userOpenId);
 }

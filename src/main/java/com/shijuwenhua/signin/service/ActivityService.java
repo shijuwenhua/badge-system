@@ -5,6 +5,7 @@ import java.util.List;
 import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.Badge;
 import com.shijuwenhua.signin.model.User;
+import com.shijuwenhua.signin.model.ActivityDto;
 
 public interface ActivityService {
 
@@ -23,5 +24,9 @@ public interface ActivityService {
     public void delete(long activityId);
 
 	String checkActivityStatus(long activityId, int attendanceTimes);
+
+	List<Activity> findActivitiesByBadgeId(long badgeId);
+
+	List<ActivityDto> findActivitiesDtoByBadgeId(long badgeId);
 
 }

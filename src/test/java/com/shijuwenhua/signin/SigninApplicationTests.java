@@ -11,7 +11,6 @@ public class SigninApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		String test = "";
 	}
 
 }

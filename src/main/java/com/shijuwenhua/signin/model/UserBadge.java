@@ -26,6 +26,9 @@ public class UserBadge {
 	@Column
 	private String achievementTime;
 	
+	@Column
+	private int obtainTimes;
+	
 	@Column(nullable = false)
 	private String status;
 
@@ -67,5 +70,13 @@ public class UserBadge {
 
 	public void setUserOpenId(String userOpenId) {
 		this.userOpenId = userOpenId;
+	}
+
+	public int getObtainTimes() {
+		return obtainTimes;
+	}
+
+	public void setObtainTimes(int obtainTimes) {
+		this.obtainTimes = obtainTimes;
 	}
 }

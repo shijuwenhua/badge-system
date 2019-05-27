@@ -28,6 +28,9 @@ public class UserActivity {
 	
 	@Column(nullable = false)
 	private String status;
+	
+	@Column
+	private String achievementTime;
 
 	public long getActivityId() {
 		return activityId;
@@ -67,6 +70,14 @@ public class UserActivity {
 
 	public void setAttendTimes(int attendTimes) {
 		this.attendTimes = attendTimes;
+	}
+
+	public String getAchievementTime() {
+		return achievementTime;
+	}
+
+	public void setAchievementTime(String achievementTime) {
+		this.achievementTime = achievementTime;
 	}
 
 }

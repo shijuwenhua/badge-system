@@ -2,13 +2,13 @@ package com.shijuwenhua.signin.service;
 
 import java.util.List;
 
-import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.Badge;
+import com.shijuwenhua.signin.model.BadgeDto;
 import com.shijuwenhua.signin.model.User;
 
 public interface BadgeService {
 
-    public List<Badge> getBadgeList();
+    public List<Badge> getAllBadges();
     
     public List<Badge> getEditBadgeList(long badgeId);
 
@@ -22,7 +22,15 @@ public interface BadgeService {
 
     public void delete(long badgeId);
 
-    List<Badge> getSubBadgesList(long id);
+    List<BadgeDto> getSubBadgesList(long id);
     
     Badge getUpgradeBadge(long id);
+
+	Badge findBadgesByActivityId(long activityId);
+
+	List<BadgeDto> getUserSubBadgesList(long id, String userOpenId);
+
+	List<Badge> getHighBadges();
+
+	List<Badge> getSubBadges(long id);
 }

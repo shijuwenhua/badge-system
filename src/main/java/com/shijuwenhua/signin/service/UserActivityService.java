@@ -1,10 +1,12 @@
 package com.shijuwenhua.signin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.User;
 import com.shijuwenhua.signin.model.UserActivity;
+import com.shijuwenhua.signin.model.ActivityDto;
 
 public interface UserActivityService {
 
@@ -27,4 +29,6 @@ public interface UserActivityService {
     public void delete(long activityUserId);
 
 	void deleteByActivityIdAndUserId(long activityId, long userOpenId);
+
+	List<ActivityDto> findActivitiesByBadgeId(long badgeId, String userOpenId, String status);
 }

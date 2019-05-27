@@ -1,13 +1,16 @@
 package com.shijuwenhua.signin.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shijuwenhua.signin.model.Activity;
+import com.shijuwenhua.signin.model.ActivityDto;
 import com.shijuwenhua.signin.model.User;
 import com.shijuwenhua.signin.model.UserActivity;
+import com.shijuwenhua.signin.repository.ActivityRepository;
 import com.shijuwenhua.signin.repository.UserActivityRepository;
 import com.shijuwenhua.signin.service.UserActivityService;
 
@@ -16,6 +19,9 @@ public class UserActivityServiceImpl implements UserActivityService{
     
     @Autowired
     private UserActivityRepository userActivityRepository;
+    
+    @Autowired
+    private ActivityRepository activityRepository;
 
 	@Override
 	public List<UserActivity> getUserActivityList() {
@@ -77,6 +83,11 @@ public class UserActivityServiceImpl implements UserActivityService{
 		return userActivityRepository.findByUserIdAndActivityId(userOpenId, activityId);
 	}
 
+	@Override
+	public List<ActivityDto> findActivitiesByBadgeId(long badgeId, String userOpenId, String queryStatus) {
+		// TODO Auto-generated method stub
+		return activityRepository.findUADtoByBadgeIdAndUserOpenId(badgeId, userOpenId, queryStatus);
+	}
 }
 
 

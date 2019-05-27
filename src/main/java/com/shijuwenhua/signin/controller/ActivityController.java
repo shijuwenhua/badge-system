@@ -72,7 +72,7 @@ public class ActivityController {
 
 	@RequestMapping("/toAddActivity")
 	public String toAdd(Model model) {
-		List<Badge> badges = badgeService.getBadgeList();
+		List<Badge> badges = badgeService.getAllBadges();
 		model.addAttribute("badges", badges);
 		return "activity/activityAdd";
 	}
@@ -93,8 +93,8 @@ public class ActivityController {
 	public String toEdit(Model model, Long id) {
 		Activity activity = activityService.findActivityById(id);
 		model.addAttribute("activity", activity);
-		Badge badge = activityBadgeService.findBadgesByActivityId(id);
-		List<Badge> badges = badgeService.getBadgeList();
+		Badge badge = badgeService.findBadgesByActivityId(id);
+		List<Badge> badges = badgeService.getAllBadges();
 		model.addAttribute("editBadges", badges);
 		model.addAttribute("badge", badge);
 		return "activity/activityEdit";

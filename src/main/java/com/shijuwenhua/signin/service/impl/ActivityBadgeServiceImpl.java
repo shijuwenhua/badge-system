@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.ActivityBadge;
-import com.shijuwenhua.signin.model.Badge;
 import com.shijuwenhua.signin.repository.ActivityBadgeRepository;
 import com.shijuwenhua.signin.service.ActivityBadgeService;
 
@@ -27,18 +25,6 @@ public class ActivityBadgeServiceImpl implements ActivityBadgeService{
 	public List<ActivityBadge> getActivityBadgeList() {
 		// TODO Auto-generated method stub
 		return activityBadgeRepository.findAll();
-	}
-
-	@Override
-	public Badge findBadgesByActivityId(long activityId) {
-		// TODO Auto-generated method stub
-		return activityBadgeRepository.findBadgesByActivityId(activityId);
-	}
-
-	@Override
-	public List<Activity> findActivitiesByBadgeId(long badgeId) {
-		// TODO Auto-generated method stub
-		return activityBadgeRepository.findActivitiesByBadgeId(badgeId);
 	}
 
 	@Override
@@ -84,9 +70,9 @@ public class ActivityBadgeServiceImpl implements ActivityBadgeService{
 	}
 
 	@Override
-	public List<ActivityBadge> findActivityBadgesByBadgeIdAndUserOpenId(long badgeId, String userOpenId) {
+	public List<ActivityBadge> findUserCompletedActivity(long badgeId, String userOpenId) {
 		// TODO Auto-generated method stub
-		return activityBadgeRepository.findActivityBadgesByBadgeIdAndUserOpenId(badgeId, userOpenId);
+		return activityBadgeRepository.findUserCompletedActivity(badgeId, userOpenId);
 	}
 
 }

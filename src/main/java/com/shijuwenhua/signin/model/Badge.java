@@ -12,22 +12,30 @@ import javax.persistence.TableGenerator;
 @Table
 public class Badge {
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "roleSeq")  
-	@TableGenerator(name = "roleSeq", allocationSize = 1, table = "seq_table", pkColumnName = "seq_id", valueColumnName = "seq_count", pkColumnValue="badge_id")  
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "roleSeq")
+	@TableGenerator(name = "roleSeq", allocationSize = 1, table = "seq_table", pkColumnName = "seq_id", valueColumnName = "seq_count", pkColumnValue = "badge_id")
 	private long id;
+	
 	@Column(nullable = false)
 	private String title;
+	
 	@Column(nullable = false)
 	private String description;
+	
 	@Column
 	private String icon;
+	
 	@Column(nullable = false)
-	private int upgradeRequiredTime;
+	private int completedRequiredActivities;
+	
+	@Column(nullable = false)
+	private int upgradeRequiredTimes;
+	
 	@Column
-	private Long upgradeBadgeId;
+	private long upgradeBadgeId;
+	
 	@Column
 	private String upgradeBadgeTitle;
-	
 
 	public long getId() {
 		return id;
@@ -61,14 +69,6 @@ public class Badge {
 		this.icon = icon;
 	}
 
-	public int getUpgradeRequiredTime() {
-		return upgradeRequiredTime;
-	}
-
-	public void setUpgradeRequiredTime(int upgradeRequiredTime) {
-		this.upgradeRequiredTime = upgradeRequiredTime;
-	}
-
 	public Long getUpgradeBadgeId() {
 		return upgradeBadgeId;
 	}
@@ -85,4 +85,19 @@ public class Badge {
 		this.upgradeBadgeTitle = upgradeBadgeTitle;
 	}
 
+	public int getUpgradeRequiredTimes() {
+		return upgradeRequiredTimes;
+	}
+
+	public void setUpgradeRequiredTimes(int upgradeRequiredTimes) {
+		this.upgradeRequiredTimes = upgradeRequiredTimes;
+	}
+
+	public int getCompletedRequiredActivities() {
+		return completedRequiredActivities;
+	}
+
+	public void setCompletedRequiredActivities(int completedRequiredActivities) {
+		this.completedRequiredActivities = completedRequiredActivities;
+	}
 }

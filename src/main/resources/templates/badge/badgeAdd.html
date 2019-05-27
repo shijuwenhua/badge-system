@@ -1,74 +1,111 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>user</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
+<meta charset="UTF-8" />
+<title>user</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
 </head>
 <body class="container">
-<script>
-  function getUpgradeBadgeInfo(){
-         var ele = document.getElementById("upgradeBadge");
-         var op = ele.options[ele.selectedIndex];
-         console.log(op);
-         document.getElementById("upgradeBadgeId").value=op.value;
-         document.getElementById("upgradeBadgeTitle").value=op.text;
-  }
-  function reset(){
-         document.getElementById("upgradeBadgeId").value=0;
-         document.getElementById("upgradeBadgeTitle").value="无";
-  }
-</script>
-<br/>
-<h1>添加勋章</h1>
-<br/><br/>
-<div class="with:80%">
-    <form class="form-horizontal"   th:action="@{/addBadge}"  method="post">
-        <div class="form-group">
-            <label for="title" class="col-sm-2 control-label">Title</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="title"  id="title" placeholder="title"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="icon" class="col-sm-2 control-label" >Icon</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="icon" id="icon" placeholder="icon"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="col-sm-2 control-label">Description</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="description"  id="description" placeholder="description"/>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="upgradeRequiredTime" class="col-sm-2 control-label">Required Condition</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="upgradeRequiredTime"  id="upgradeRequiredTime" placeholder="upgradeRequiredTime"/>
-            </div>
-        </div>
-        <div class="form-group ">
-	        <label for="upgradeBadge" class="col-sm-2 control-label">下一级勋章</label>
-	        <div class="col-sm-10">
-	            <select id="upgradeBadge" class="form-control" name="upgradeBadge" onchange="getUpgradeBadgeInfo()">
-	                <option>请选择勋章</option>
-	                <option  th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
-	            </select>
-	        </div>
-	    </div>
-	    <input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId" value="0" placeholder="upgradeBadgeId"/>
-	    <input type="hidden" id="upgradeBadgeTitle" name="upgradeBadgeTitle" value="" placeholder="upgradeBadgeTitle"/>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" value="Submit" class="btn btn-info" />
-                &nbsp; &nbsp; &nbsp;
-                <input type="reset" value="Reset" class="btn btn-info" onclick="reset()"/>
-            </div>
+	<script>
+		function getUpgradeBadgeInfo() {
+			var ele = document.getElementById("upgradeBadge");
+			var op = ele.options[ele.selectedIndex];
+			console.log(op);
+			document.getElementById("upgradeBadgeId").value = op.value;
+			document.getElementById("upgradeBadgeTitle").value = op.text;
+		}
+		function reset() {
+			normal();
+			document.getElementById("completedRequiredActivities").value = 0;
+		}
+		function normal() {
+			document.getElementById("high").style.display="none";
+			document.getElementById("normal").style.display="";
+			document.getElementById("upgradeBadgeId").value = 0;
+			document.getElementById("upgradeBadgeTitle").value = "无";
+			document.getElementById("upgradeRequiredTimes").value = 0;
+		}
+		function high() {
+			document.getElementById("high").style.display="";
+			document.getElementById("normal").style.display="none";
+			document.getElementById("completedRequiredActivities").value = 0;
+		}
+	</script>
+	<br />
+	<h1>添加勋章</h1>
+	<br />
+	<br />
+	<div class="with:80%">
+		<form class="form-horizontal" th:action="@{/addBadge}" method="post">
+			<div class="form-group">
+				<label for="title" class="col-sm-2 control-label">Title</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="title" id="title"
+						placeholder="title" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="icon" class="col-sm-2 control-label">Icon</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="icon" id="icon"
+						placeholder="icon" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="description" class="col-sm-2 control-label">Description</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="description"
+						id="description" placeholder="description" />
+				</div>
+			</div>
+			<div class="form-group ">
+				<label for="badgeType" class="col-sm-2 control-label">勋章类型</label>
+				<div class="col-sm-10">
+					<input type="radio" th:name="badgeType" th:value="normalAcvtivity" checked="checked" onclick="normal()"/> normal acvtivity
+					<input type="radio" th:name="badgeType" th:value="highLevel" onclick="high()"/>high level
+				</div>
+			</div>
+			<div class="form-group" id="normal">
+				<label for="completedRequiredActivities" class="col-sm-2 control-label">参与完成活动数量</label>
+				<div class="col-sm-10">
+					<input type="number" class="form-control" name="completedRequiredActivities"
+						id="completedRequiredActivities" placeholder="completedRequiredActivities" />
+				</div>
+			</div>
+			<div id="high" style="display:none;">
+				<div class="form-group ">
+					<label for="upgradeBadge" class="col-sm-2 control-label">下一级勋章</label>
+					<div class="col-sm-10">
+						<select id="upgradeBadge" class="form-control" name="upgradeBadge"
+							onchange="getUpgradeBadgeInfo()">
+							<option>请选择勋章</option>
+							<option th:each="badge:${badges}" th:value="${badge.id}"
+								th:text="${badge.title}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="upgradeRequiredTimes" class="col-sm-2 control-label">升级勋章累计勋章数</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" name="upgradeRequiredTimes"
+							id="upgradeRequiredTimes" placeholder="upgradeRequiredTimes" />
+					</div>
+				</div>
+			</div>
+			<input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId"
+				value="0" placeholder="upgradeBadgeId" /> <input type="hidden"
+				id="upgradeBadgeTitle" name="upgradeBadgeTitle" value=""
+				placeholder="upgradeBadgeTitle" />
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<input type="submit" value="Submit" class="btn btn-info" /> &nbsp;
+					&nbsp; &nbsp; <input type="reset" value="Reset"
+						class="btn btn-info" onclick="reset()" />
+				</div>
 
-        </div>
-    </form>
-</div>
+			</div>
+		</form>
+	</div>
 </body>
 </html>
 

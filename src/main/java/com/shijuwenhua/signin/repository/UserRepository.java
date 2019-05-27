@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     @Query("select t from User t where t.openId = ?1")
     User findByOpenId(String openId);
+    
+    
 }

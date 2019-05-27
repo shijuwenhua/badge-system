@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.Badge;
+import com.shijuwenhua.signin.model.BadgeDto;
 import com.shijuwenhua.signin.model.User;
 import com.shijuwenhua.signin.repository.BadgeRepository;
 import com.shijuwenhua.signin.service.BadgeService;
@@ -18,9 +18,15 @@ public class BadgeServiceImpl implements BadgeService{
     private BadgeRepository badgeRepository;
 
 	@Override
-	public List<Badge> getBadgeList() {
+	public List<Badge> getAllBadges() {
 		// TODO Auto-generated method stub
 		return badgeRepository.findAll();
+	}
+	
+	@Override
+	public List<Badge> getHighBadges() {
+		// TODO Auto-generated method stub
+		return badgeRepository.getHighLevelBadges();
 	}
 
 	@Override
@@ -60,15 +66,33 @@ public class BadgeServiceImpl implements BadgeService{
 	}
 
 	@Override
-	public List<Badge> getSubBadgesList(long id) {
+	public List<BadgeDto> getSubBadgesList(long id) {
 		// TODO Auto-generated method stub
 		return badgeRepository.getSubBadgesList(id);
+	}
+	
+	@Override
+	public List<Badge> getSubBadges(long id) {
+		// TODO Auto-generated method stub
+		return badgeRepository.getSubBadges(id);
+	}
+	
+	@Override
+	public List<BadgeDto> getUserSubBadgesList(long id, String userOpenId) {
+		// TODO Auto-generated method stub
+		return badgeRepository.getUserBadgesList(id, userOpenId);
 	}
 
 	@Override
 	public Badge getUpgradeBadge(long id) {
 		// TODO Auto-generated method stub
 		return badgeRepository.getUpgradeBadge(id);
+	}
+	
+	@Override
+	public Badge findBadgesByActivityId(long activityId) {
+		// TODO Auto-generated method stub
+		return badgeRepository.findBadgesByActivityId(activityId);
 	}
 
 }
