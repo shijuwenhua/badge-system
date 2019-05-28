@@ -78,33 +78,40 @@ public class ActivityController {
 	}
 
 	@RequestMapping("/addActivity")
-	public String add(Activity activity, long upgradeBadgeId, int requiredAttendTimes, String requiredActivity) {
+	public String add(Activity activity, long badgeTypeId, int requiredAttendTimes, String requiredActivity) {
 		activityService.save(activity);
 		ActivityBadge activityBadge = new ActivityBadge();
 		activityBadge.setActivityId(activity.getId());
-		activityBadge.setBadgeId(upgradeBadgeId);
+		activityBadge.setBadgeId(badgeTypeId);
 		activityBadge.setRequiredAttendTimes(requiredAttendTimes);
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.save(activityBadge);
+//		badgeService.updateBadgeCoreActivities(badgeTypeId);
 		return "redirect:/listActivity";
 	}
 
 	@RequestMapping("/toEditActivity")
 	public String toEdit(Model model, Long id) {
+		ActivityBadge activityBadge = activityBadgeService.findActivityBadgesByActivityId(id);
 		Activity activity = activityService.findActivityById(id);
 		model.addAttribute("activity", activity);
 		Badge badge = badgeService.findBadgesByActivityId(id);
 		List<Badge> badges = badgeService.getActivityEditBadgesList();
 		model.addAttribute("editBadges", badges);
 		model.addAttribute("badge", badge);
+		model.addAttribute("activityBadge", activityBadge);
 		return "activity/activityEdit";
 	}
 
 	@RequestMapping("/editActivity")
-	public String edit(Activity activity, long upgradeBadgeId, int requiredAttendTimes, String requiredActivity) {
+	public String edit(Activity activity, long badgeTypeId, int requiredAttendTimes, String requiredActivity) {
 		activityService.edit(activity);
-		ActivityBadge activityBadge = activityBadgeService.findActivityBadgesByActivityId(activity.getId()).get(0);
-		activityBadge.setBadgeId(upgradeBadgeId);
+		ActivityBadge activityBadge = activityBadgeService.findActivityBadgesByActivityId(activity.getId());
+//		if(activityBadge.getRequiredActivity().equals(requiredActivity))
+//			badgeService.updateBadgeCoreActivities(activityBadge.getBadgeId());
+//		if(badgeTypeId != activityBadge.getBadgeId())
+//			badgeService.updateBadgeCoreActivities(badgeTypeId);
+		activityBadge.setBadgeId(badgeTypeId);
 		activityBadge.setRequiredAttendTimes(requiredAttendTimes);
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.edit(activityBadge);
@@ -114,7 +121,7 @@ public class ActivityController {
 	@RequestMapping("/deleteActivity")
 	public String delete(Long id) {
 		activityService.delete(id);
-		activityBadgeService.delete(activityBadgeService.findActivityBadgesByActivityId(id).get(0).getId());
+		activityBadgeService.delete(activityBadgeService.findActivityBadgesByActivityId(id).getId());
 		return "redirect:/listActivity";
 	}
 }

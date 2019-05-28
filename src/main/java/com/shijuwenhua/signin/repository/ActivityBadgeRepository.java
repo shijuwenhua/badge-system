@@ -20,7 +20,7 @@ public interface ActivityBadgeRepository extends JpaRepository<ActivityBadge, Lo
 	void deleteById(Long id);
 
 	@Query("select t from ActivityBadge t where t.activityId = ?1")
-	List<ActivityBadge> findActivityBadgesByActivityId(long activityId);
+	ActivityBadge findActivityBadgesByActivityId(long activityId);
 
 	@Query("select t from ActivityBadge t where t.badgeId = ?1")
 	List<ActivityBadge> findActivityBadgesByBadgeId(long badgeId);

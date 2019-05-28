@@ -8,13 +8,13 @@
 <body class="container">
 <script>
   function getUpgradeBadgeInfo(){
-         var ele = document.getElementById("upgradeBadge");
+         var ele = document.getElementById("badgeType");
          var op = ele.options[ele.selectedIndex];
          console.log(op);
-         document.getElementById("upgradeBadgeId").value=op.value;
+         document.getElementById("badgeTypeId").value=op.value;
   }
   function reset(){
-         document.getElementById("upgradeBadgeId").value=0;
+         document.getElementById("badgeTypeId").value=0;
   }
 </script>
 <br/>
@@ -46,29 +46,36 @@
                 <input type="text" class="form-control" name="icon" id="icon" placeholder="icon"/>
             </div>
         </div>
-        <div class="form-group ">
-	        <label for="upgradeBadge" class="col-sm-2 control-label">勋章类别</label>
+        <div class="form-group">
+	        <label for="type" class="col-sm-2 control-label">勋章重要活动</label>
 	        <div class="col-sm-10">
-	            <select id="upgradeBadge" class="form-control" name="upgradeBadge" onchange="getUpgradeBadgeInfo()">
+	            <input type="radio" th:name="type" th:value="scripture" checked="checked"/>读经
+	            <input type="radio" th:name="type" th:value="others" />其他活动
+	        </div>
+	    </div>
+        <div class="form-group">
+	        <label for="badgeType" class="col-sm-2 control-label">勋章类别</label>
+	        <div class="col-sm-10">
+	            <select id="badgeType" class="form-control" name="badgeType" onchange="getUpgradeBadgeInfo()">
 	                <option>请选择勋章</option>
 	                <option  th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
 	            </select>
 	        </div>
 	    </div>
-	    <div class="form-group ">
+	    <div class="form-group">
 	        <label for="requiredActivity" class="col-sm-2 control-label">勋章重要活动</label>
 	        <div class="col-sm-10">
 	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="yes" checked="checked"/>
 	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="no"/>
 	        </div>
 	    </div>
-	    <div class="form-group">
-            <label for="requiredAttendTimes" class="col-sm-2 control-label" >Required Attendance Times</label>
-            <div class="col-sm-10">
-                <input type="number" class="requiredAttendTimes" name="requiredAttendTimes" id="requiredAttendTimes" placeholder="requiredAttendanceTimes"/>
-            </div>
-        </div>
-        <input type="hidden" id="upgradeBadgeId" name="upgradeBadgeId" value="0" placeholder="upgradeBadgeId"/>
+        <div class="form-group">
+			<label for="requiredAttendTimes" class="col-sm-2 control-label">参与完成活动次数</label>
+			<div class="col-sm-10">
+				<input type="number" class="form-control" name="requiredAttendTimes" th:value=0 id="requiredAttendTimes" placeholder="requiredAttendTimes" />
+			</div>
+		</div>
+        <input type="hidden" id="badgeTypeId" name="badgeTypeId" value="0" placeholder="badgeTypeId"/>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <input type="submit" value="Submit" class="btn btn-info" />

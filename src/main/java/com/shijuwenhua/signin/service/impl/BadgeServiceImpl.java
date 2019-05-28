@@ -100,7 +100,12 @@ public class BadgeServiceImpl implements BadgeService{
 		// TODO Auto-generated method stub
 		return badgeRepository.findBadgesByActivityId(activityId);
 	}
-
+	
+//	@Override
+//	public int updateBadgeCoreActivities(long badgeId) {
+//		// TODO Auto-generated method stub
+//		return badgeRepository.updateBadgeCoreActivities(badgeId);
+//	}
 }
 
 

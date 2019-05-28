@@ -42,4 +42,7 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
 	
 	@Query("select b from Badge b where b.completedRequiredActivities = 0")
 	List<Badge> getHighLevelBadges();
+	
+//	@Query(value = "update badge set core_activities = (select count(*) from activity_badge where badge_id = ?1 and required_activity = 'yes') where id = ?1", nativeQuery = true)
+//	int updateBadgeCoreActivities(long badgeId);
 }

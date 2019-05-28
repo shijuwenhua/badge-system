@@ -107,7 +107,6 @@ public class UserController {
 				}
 			}
 		}
-
 		return badgeActivities;
 	}
 
@@ -161,14 +160,14 @@ public class UserController {
 
 	@RequestMapping("/joinActivity/{openId}/{activityId}")
 	@ResponseBody
-	public BadgeDetail joinActivity(@PathVariable("openId") String userOpenId,
+	public List<BadgeDetail> joinActivity(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId) throws Exception {
 		
-		Badge badge = checkBadgeIsExist(activityId);
+		Badge badge = checkIsExist(activityId);
 
 		checkAndCreateUserActivity(userOpenId, activityId, badge);
 		
-		return getUserBadgesDetail(userOpenId, badge.getId());
+		return getUserBadgesDetailList(userOpenId);
 	}
 	
 	@RequestMapping("/attendActivity/{openId}/{activityId}")
@@ -176,7 +175,7 @@ public class UserController {
 	public BadgeDetail attendActivity(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId) throws Exception {
 
-		Badge badge = checkBadgeIsExist(activityId);
+		Badge badge = checkIsExist(activityId);
 
 		UserActivity userActivity = checkAndCreateUserActivity(userOpenId, activityId, badge);
 		
@@ -187,7 +186,7 @@ public class UserController {
 			userActivity.setStatus(activityStatus);
 			if (StatusConstants.COMPLETED.equals(activityStatus)) {
 				userActivity.setAchievementTime(LocalDateTime.now().format(formatter));
-				checkBadge(badge.getId(), badge.getCompletedRequiredActivities(), activityStatus, userOpenId);
+				checkBadge(badge, activityStatus, userOpenId);
 			}
 		}
 		userActivityService.save(userActivity);
@@ -214,21 +213,23 @@ public class UserController {
 		return userActivity;
 	}
 
-	private Badge checkBadgeIsExist(Long activityId) throws Exception {
+	private Badge checkIsExist(Long activityId) throws Exception {
+		if(activityService.findActivityById(activityId) == null)
+			throw new Exception("Cannot find the activity");
 		Badge badge = badgeService.findBadgesByActivityId(activityId);
 		if (badge == null)
 			throw new Exception("Cannot find the activity related badge");
 		return badge;
 	}
 
-	private void checkBadge(long badgeId, int completedRequiredActivities, String activityStatus, String userOpenId) {
-		UserBadge userBadge = userBadgeRepository.findByBadgeId(badgeId, userOpenId);
+	private void checkBadge(Badge badge, String activityStatus, String userOpenId) {
+		UserBadge userBadge = userBadgeRepository.findByBadgeId(badge.getId(), userOpenId);
 		if ("Processing".equals(userBadge.getStatus())) {
-			if (isObtainBadge(badgeId, completedRequiredActivities, userOpenId)) {
+			if (isObtainBadge(badge, userOpenId)) {
 				userBadge.setStatus(StatusConstants.COMPLETED);
 				userBadge.setAchievementTime(LocalDateTime.now().format(formatter));
 				userBadgeRepository.save(userBadge);
-				checkUpgradeBadge(badgeId, userOpenId);
+				checkUpgradeBadge(badge.getId(), userOpenId);
 			}
 		}
 	}
@@ -250,11 +251,11 @@ public class UserController {
 		}
 	}
 
-	private boolean isObtainBadge(long badgeId, int completedRequiredActivities, String userOpenId) {
-		List<ActivityBadge> activityBadges = activityBadgeService.findActivityBadgesByBadgeId(badgeId);
-		List<ActivityBadge> userCompletedActivityBadge = activityBadgeService.findUserCompletedActivity(badgeId,
+	private boolean isObtainBadge(Badge badge, String userOpenId) {
+		List<ActivityBadge> activityBadges = activityBadgeService.findActivityBadgesByBadgeId(badge.getId());
+		List<ActivityBadge> userCompletedActivityBadge = activityBadgeService.findUserCompletedActivity(badge.getId(),
 				userOpenId);
-		if (userCompletedActivityBadge.size() >= completedRequiredActivities) {
+		if (userCompletedActivityBadge.size() >= badge.getCompletedRequiredActivities()) {
 			int allRequiredActivities = 0;
 			int userCompletedRequired = 0;
 			allRequiredActivities = countRequiredActivities(activityBadges);

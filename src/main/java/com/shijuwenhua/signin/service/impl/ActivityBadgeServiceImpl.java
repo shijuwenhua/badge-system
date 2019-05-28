@@ -58,7 +58,7 @@ public class ActivityBadgeServiceImpl implements ActivityBadgeService{
 	}
 
 	@Override
-	public List<ActivityBadge> findActivityBadgesByActivityId(long activityId) {
+	public ActivityBadge findActivityBadgesByActivityId(long activityId) {
 		// TODO Auto-generated method stub
 		return activityBadgeRepository.findActivityBadgesByActivityId(activityId);
 	}

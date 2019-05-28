@@ -8,7 +8,7 @@ public interface ActivityBadgeService {
 
     public List<ActivityBadge> getActivityBadgeList();
     
-    public List<ActivityBadge> findActivityBadgesByActivityId(long activityId);
+    public ActivityBadge findActivityBadgesByActivityId(long activityId);
 
     public ActivityBadge findActivityBadgeByActivityIdAndBadgeId(long activityId, long badgeId);
 

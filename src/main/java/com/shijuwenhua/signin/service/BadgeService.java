@@ -35,4 +35,6 @@ public interface BadgeService {
 	List<Badge> getSubBadges(long id);
 
 	List<Badge> getActivityEditBadgesList();
+
+//	int updateBadgeCoreActivities(long badgeId);
 }
