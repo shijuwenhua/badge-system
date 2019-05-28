@@ -37,8 +37,8 @@ public class Badge {
 	@Column
 	private String upgradeBadgeTitle;
 	
-//	@Column
-//	private int coreActivities;
+	@Column
+	private int coreActivities;
 
 	public long getId() {
 		return id;
@@ -104,11 +104,11 @@ public class Badge {
 		this.completedRequiredActivities = completedRequiredActivities;
 	}
 
-//	public int getCoreActivities() {
-//		return coreActivities;
-//	}
-//
-//	public void setCoreActivities(int coreActivities) {
-//		this.coreActivities = coreActivities;
-//	}
+	public int getCoreActivities() {
+		return coreActivities;
+	}
+
+	public void setCoreActivities(int coreActivities) {
+		this.coreActivities = coreActivities;
+	}
 }

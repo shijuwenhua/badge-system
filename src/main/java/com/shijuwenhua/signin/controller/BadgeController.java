@@ -71,7 +71,13 @@ public class BadgeController {
     @RequestMapping("/toEditBadge")
     public String toEdit(Model model,Long id) {
         Badge badge=badgeService.findBadgeById(id);
-        List<Badge> editBadgesList = badgeService.getEditBadgeList(id);
+        if(badge == null) {
+			badge = new Badge();
+			badge.setId(0);
+			badge.setTitle("null");
+			badge.setUpgradeBadgeId(0);
+		}
+        List<Badge> editBadgesList = badgeService.getEditBadgeList(id, badge.getUpgradeBadgeId());
     	model.addAttribute("editBadges", editBadgesList);
         model.addAttribute("badge", badge);
         model.addAttribute("highLevel", badge.getCompletedRequiredActivities()==0?true:false);

@@ -60,15 +60,15 @@ public class BadgeServiceImpl implements BadgeService{
 	}
 
 	@Override
-	public List<Badge> getEditBadgeList(long badgeId) {
+	public List<Badge> getEditBadgeList(long badgeId, long upgradeBadgeId) {
 		// TODO Auto-generated method stub
-		return badgeRepository.getEditBadgesList(badgeId);
+		return badgeRepository.getEditBadgesList(badgeId, upgradeBadgeId);
 	}
 	
 	@Override
-	public List<Badge> getActivityEditBadgesList() {
+	public List<Badge> getActivityEditBadgesList(long badgeId) {
 		// TODO Auto-generated method stub
-		return badgeRepository.getActivityEditBadgesList();
+		return badgeRepository.getActivityEditBadgesList(badgeId);
 	}
 
 	@Override
@@ -101,11 +101,11 @@ public class BadgeServiceImpl implements BadgeService{
 		return badgeRepository.findBadgesByActivityId(activityId);
 	}
 	
-//	@Override
-//	public int updateBadgeCoreActivities(long badgeId) {
-//		// TODO Auto-generated method stub
-//		return badgeRepository.updateBadgeCoreActivities(badgeId);
-//	}
+	@Override
+	public void updateBadgeCoreActivities(long badgeId) {
+		// TODO Auto-generated method stub
+		badgeRepository.updateBadgeCoreActivities(badgeId);
+	}
 }
 
 

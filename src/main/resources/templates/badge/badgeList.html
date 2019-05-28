@@ -21,7 +21,7 @@
             <th>下一级勋章</th>
             <th>升级勋章累计勋章数</th>
             <th>Edit</th>
-            <th>Delete</th>
+            <!-- <th>Delete</th> -->
         </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
             <td th:text="${badge.upgradeBadgeTitle}">upgradeBadgeTitle</td>
             <td th:text="${badge.upgradeRequiredTimes}">6</td>
             <td><a th:href="@{/toEditBadge(id=${badge.id})}">edit</a></td>
-            <td><a th:href="@{/deleteBadge(id=${badge.id})}">delete</a></td>
+            <!-- <td><a th:href="@{/deleteBadge(id=${badge.id})}">delete</a></td> -->
         </tr>
         </tbody>
     </table>

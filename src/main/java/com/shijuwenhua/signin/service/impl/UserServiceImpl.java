@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shijuwenhua.signin.model.Activity;
-import com.shijuwenhua.signin.model.Badge;
+import com.shijuwenhua.signin.model.BadgeDto;
 import com.shijuwenhua.signin.model.User;
 import com.shijuwenhua.signin.repository.UserBadgeRepository;
 import com.shijuwenhua.signin.repository.UserRepository;
@@ -58,9 +58,15 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<Badge> findBadgesByUserId(String userOpenId) {
+	public List<BadgeDto> findBadgesByUserId(String userOpenId) {
 		// TODO Auto-generated method stub
 		return userBadgeRepository.findBadgesByUserId(userOpenId);
+	}
+	
+	@Override
+	public BadgeDto findBadgesByUserId(long badgeId, String userOpenId) {
+		// TODO Auto-generated method stub
+		return userBadgeRepository.findBadgesByUserId(badgeId, userOpenId);
 	}
 }
 

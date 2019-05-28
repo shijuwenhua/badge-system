@@ -63,7 +63,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public String checkActivityStatus(long activityId, int attendanceTimes) {
 		Activity activity = findActivityById(activityId);
 		if(attendanceTimes >= activity.getRequiredAttendTimes()) {
-			return "Compeleted";
+			return "Completed";
 		}
 		return "Processing";
 	}

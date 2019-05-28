@@ -12,6 +12,8 @@ public class BadgeDetail {
 	private Long upgradeBadgeId;
 	private String upgradeBadgeTitle;
 	private int completedRequiredActivities;
+	private String status;
+	private String achievementTime;
 	private List<ActivityDto> userActivityList;
 	private List<BadgeDto> badgeList;
 
@@ -93,5 +95,21 @@ public class BadgeDetail {
 
 	public void setBadgeList(List<BadgeDto> badgeList) {
 		this.badgeList = badgeList;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getAchievementTime() {
+		return achievementTime;
+	}
+
+	public void setAchievementTime(String achievementTime) {
+		this.achievementTime = achievementTime;
 	}
 }

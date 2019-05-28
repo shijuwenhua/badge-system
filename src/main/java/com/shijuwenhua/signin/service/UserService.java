@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.Badge;
+import com.shijuwenhua.signin.model.BadgeDto;
 import com.shijuwenhua.signin.model.User;
 
 public interface UserService {
@@ -22,6 +23,8 @@ public interface UserService {
 
 	public User findUserByOpenId(String openId);
 
-	List<Badge> findBadgesByUserId(String userOpenId);
+	List<BadgeDto> findBadgesByUserId(String userOpenId);
+
+	BadgeDto findBadgesByUserId(long badgeId, String userOpenId);
 
 }

@@ -3,7 +3,9 @@ package com.shijuwenhua.signin.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shijuwenhua.signin.model.Badge;
 import com.shijuwenhua.signin.model.BadgeDto;
@@ -14,11 +16,11 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
 
 	void deleteById(Long id);
 	
-	@Query("select t from Badge t where t.completedRequiredActivities = 0 and t.id != ?1 and t.upgradeBadgeId != ?1")
-	List<Badge> getEditBadgesList(long id);
+	@Query("select t from Badge t where t.completedRequiredActivities = 0 and t.id != ?1 and t.upgradeBadgeId != ?1 and t.id != ?2")
+	List<Badge> getEditBadgesList(long id, long upgradeBadgeId);
 	
-	@Query("select t from Badge t where t.completedRequiredActivities != 0")
-	List<Badge> getActivityEditBadgesList();
+	@Query("select t from Badge t where t.completedRequiredActivities != 0 and t.id != ?1")
+	List<Badge> getActivityEditBadgesList(long badgeId);
 
 	@Query("select new com.shijuwenhua.signin.model.BadgeDto(b) from Badge b where b.upgradeBadgeId = ?1")
 	List<BadgeDto> getSubBadgesList(long id);
@@ -43,6 +45,8 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
 	@Query("select b from Badge b where b.completedRequiredActivities = 0")
 	List<Badge> getHighLevelBadges();
 	
-//	@Query(value = "update badge set core_activities = (select count(*) from activity_badge where badge_id = ?1 and required_activity = 'yes') where id = ?1", nativeQuery = true)
-//	int updateBadgeCoreActivities(long badgeId);
+	@Transactional
+	@Modifying
+	@Query(value = "update badge set core_activities = (select count(*) from activity_badge where badge_id = ?1 and required_activity = 'yes') where id = ?1", nativeQuery = true)
+	void updateBadgeCoreActivities(long badgeId);
 }

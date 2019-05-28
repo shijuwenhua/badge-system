@@ -5,12 +5,13 @@ public class BadgeDto {
 	private String title;
 	private String description;
 	private String icon;
-	private int upgradeRequiredTime;
+	private int upgradeRequiredTimes;
 	private Long upgradeBadgeId;
 	private String upgradeBadgeTitle;
 	private int completedRequiredActivities;
 	private String achievementTime;
 	private String status;
+	private int coreActivities;
 	
 	
 	public BadgeDto(Badge badge, String achievementTime, String status) {
@@ -18,12 +19,13 @@ public class BadgeDto {
 		this.title = badge.getTitle();
 		this.description = badge.getDescription();
 		this.icon = badge.getIcon();
-		this.upgradeRequiredTime = badge.getUpgradeRequiredTimes();
+		this.upgradeRequiredTimes = badge.getUpgradeRequiredTimes();
 		this.upgradeBadgeId = badge.getUpgradeBadgeId();
 		this.upgradeBadgeTitle = badge.getUpgradeBadgeTitle();
 		this.achievementTime = achievementTime;
 		this.status = status;
 		this.completedRequiredActivities = badge.getCompletedRequiredActivities();
+		this.coreActivities = badge.getCoreActivities();
 	}
 	
 	public BadgeDto(Badge badge) {
@@ -31,10 +33,11 @@ public class BadgeDto {
 		this.title = badge.getTitle();
 		this.description = badge.getDescription();
 		this.icon = badge.getIcon();
-		this.upgradeRequiredTime = badge.getUpgradeRequiredTimes();
+		this.upgradeRequiredTimes = badge.getUpgradeRequiredTimes();
 		this.upgradeBadgeId = badge.getUpgradeBadgeId();
 		this.upgradeBadgeTitle = badge.getUpgradeBadgeTitle();
 		this.completedRequiredActivities = badge.getCompletedRequiredActivities();
+		this.coreActivities = badge.getCoreActivities();
 	}
 
 	public long getId() {
@@ -67,14 +70,6 @@ public class BadgeDto {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
-	}
-
-	public int getUpgradeRequiredTime() {
-		return upgradeRequiredTime;
-	}
-
-	public void setUpgradeRequiredTime(int upgradeRequiredTime) {
-		this.upgradeRequiredTime = upgradeRequiredTime;
 	}
 
 	public Long getUpgradeBadgeId() {
@@ -115,6 +110,22 @@ public class BadgeDto {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getUpgradeRequiredTimes() {
+		return upgradeRequiredTimes;
+	}
+
+	public void setUpgradeRequiredTimes(int upgradeRequiredTimes) {
+		this.upgradeRequiredTimes = upgradeRequiredTimes;
+	}
+
+	public int getCoreActivities() {
+		return coreActivities;
+	}
+
+	public void setCoreActivities(int coreActivities) {
+		this.coreActivities = coreActivities;
 	}
 
 }

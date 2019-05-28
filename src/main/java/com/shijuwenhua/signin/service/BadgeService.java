@@ -10,7 +10,7 @@ public interface BadgeService {
 
     public List<Badge> getAllBadges();
     
-    public List<Badge> getEditBadgeList(long badgeId);
+//    public List<Badge> getEditBadgeList(long badgeId);
 
     public List<User> findUserByBadgeId(long badgeId);
     
@@ -34,7 +34,9 @@ public interface BadgeService {
 
 	List<Badge> getSubBadges(long id);
 
-	List<Badge> getActivityEditBadgesList();
+	void updateBadgeCoreActivities(long badgeId);
 
-//	int updateBadgeCoreActivities(long badgeId);
+	List<Badge> getEditBadgeList(long badgeId, long upgradeBadgeId);
+
+	List<Badge> getActivityEditBadgesList(long badgeId);
 }

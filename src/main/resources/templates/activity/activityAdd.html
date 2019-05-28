@@ -57,8 +57,7 @@
 	        <label for="badgeType" class="col-sm-2 control-label">勋章类别</label>
 	        <div class="col-sm-10">
 	            <select id="badgeType" class="form-control" name="badgeType" onchange="getUpgradeBadgeInfo()">
-	                <option>请选择勋章</option>
-	                <option  th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
+	                <option th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
 	            </select>
 	        </div>
 	    </div>

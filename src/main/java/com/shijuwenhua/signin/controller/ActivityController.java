@@ -72,7 +72,7 @@ public class ActivityController {
 
 	@RequestMapping("/toAddActivity")
 	public String toAdd(Model model) {
-		List<Badge> badges = badgeService.getActivityEditBadgesList();
+		List<Badge> badges = badgeService.getActivityEditBadgesList(0);
 		model.addAttribute("badges", badges);
 		return "activity/activityAdd";
 	}
@@ -86,7 +86,7 @@ public class ActivityController {
 		activityBadge.setRequiredAttendTimes(requiredAttendTimes);
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.save(activityBadge);
-//		badgeService.updateBadgeCoreActivities(badgeTypeId);
+		badgeService.updateBadgeCoreActivities(badgeTypeId);
 		return "redirect:/listActivity";
 	}
 
@@ -96,7 +96,7 @@ public class ActivityController {
 		Activity activity = activityService.findActivityById(id);
 		model.addAttribute("activity", activity);
 		Badge badge = badgeService.findBadgesByActivityId(id);
-		List<Badge> badges = badgeService.getActivityEditBadgesList();
+		List<Badge> badges = badgeService.getActivityEditBadgesList(activityBadge.getBadgeId());
 		model.addAttribute("editBadges", badges);
 		model.addAttribute("badge", badge);
 		model.addAttribute("activityBadge", activityBadge);
@@ -107,14 +107,14 @@ public class ActivityController {
 	public String edit(Activity activity, long badgeTypeId, int requiredAttendTimes, String requiredActivity) {
 		activityService.edit(activity);
 		ActivityBadge activityBadge = activityBadgeService.findActivityBadgesByActivityId(activity.getId());
-//		if(activityBadge.getRequiredActivity().equals(requiredActivity))
-//			badgeService.updateBadgeCoreActivities(activityBadge.getBadgeId());
-//		if(badgeTypeId != activityBadge.getBadgeId())
-//			badgeService.updateBadgeCoreActivities(badgeTypeId);
+		long beforeEditBadgeId = activityBadge.getBadgeId();
 		activityBadge.setBadgeId(badgeTypeId);
 		activityBadge.setRequiredAttendTimes(requiredAttendTimes);
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.edit(activityBadge);
+		if (badgeTypeId != beforeEditBadgeId)
+			badgeService.updateBadgeCoreActivities(badgeTypeId);
+		badgeService.updateBadgeCoreActivities(activityBadge.getBadgeId());
 		return "redirect:/listActivity";
 	}
 
