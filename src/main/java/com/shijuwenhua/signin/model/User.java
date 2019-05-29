@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
 @Entity
-@Table
+@Table (name="pguser")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "roleSeq")  
