@@ -16,8 +16,8 @@ public class LoginUtils{
 
     private static final long serialVersionUID = 1L;
 
-    private static final String APPID = "wxfdef7ebe2a985224";  
-    private static final String SECRET = "3ce63e12fcc44c8b73e54ccffd98e0bb";
+    private static final String APPID = "wxb29a76a9a9b2015b";  
+    private static final String SECRET = "d6cee862f80ae7634adf73db47262a48";
 
     public static String getSha1(String str){
         if(StringUtils.isEmpty(str)){
