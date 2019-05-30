@@ -30,7 +30,6 @@ public class BadgeController {
     @ResponseBody
     public List<Badge> getAllSubBadges(@PathVariable("id") Long id) {
     	ConcurrentHashMap<Long, List<Badge>> allSubBadges = new ConcurrentHashMap<Long, List<Badge>>();
-    	Badge badge = badgeService.findBadgeById(id);
     	List<Badge> badges = badgeService.getSubBadges(id);
     	allSubBadges.put(id, badges);
     	return badges;

@@ -47,33 +47,34 @@
             </div>
         </div>
         <div class="form-group">
-	        <label for="type" class="col-sm-2 control-label">勋章重要活动</label>
+	        <label for="type" class="col-sm-2 control-label">活动类型</label>
 	        <div class="col-sm-10">
 	            <input type="radio" th:name="type" th:value="scripture" checked="checked"/>读经
 	            <input type="radio" th:name="type" th:value="others" />其他活动
 	        </div>
 	    </div>
+	    <div class="form-group">
+	        <label for="requiredActivity" class="col-sm-2 control-label">必须参与的活动</label>
+	        <div class="col-sm-10">
+	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="是" checked="checked"/>
+	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="否"/>
+	        </div>
+	    </div>
+        <div class="form-group">
+			<label for="requiredAttendTimes" class="col-sm-2 control-label">完成活动需要参加次数</label>
+			<div class="col-sm-10">
+				<input type="number" class="form-control" name="requiredAttendTimes" th:value=1 id="requiredAttendTimes" placeholder="requiredAttendTimes" />
+			</div>
+		</div>
         <div class="form-group">
 	        <label for="badgeType" class="col-sm-2 control-label">勋章类别</label>
 	        <div class="col-sm-10">
 	            <select id="badgeType" class="form-control" name="badgeType" onchange="getUpgradeBadgeInfo()">
+	            	<option>请选择勋章</option>
 	                <option th:each="badge:${badges}" th:value="${badge.id}" th:text="${badge.title}"></option>
 	            </select>
 	        </div>
 	    </div>
-	    <div class="form-group">
-	        <label for="requiredActivity" class="col-sm-2 control-label">勋章重要活动</label>
-	        <div class="col-sm-10">
-	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="yes" checked="checked"/>
-	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="no"/>
-	        </div>
-	    </div>
-        <div class="form-group">
-			<label for="requiredAttendTimes" class="col-sm-2 control-label">参与完成活动次数</label>
-			<div class="col-sm-10">
-				<input type="number" class="form-control" name="requiredAttendTimes" th:value=0 id="requiredAttendTimes" placeholder="requiredAttendTimes" />
-			</div>
-		</div>
         <input type="hidden" id="badgeTypeId" name="badgeTypeId" value="0" placeholder="badgeTypeId"/>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -254,15 +254,15 @@ public class UserController {
 	}
 
 	private boolean isObtainBadge(Badge badge, String userOpenId) {
-		List<ActivityBadge> activityBadges = activityBadgeService.findActivityBadgesByBadgeId(badge.getId());
+//		List<ActivityBadge> activityBadges = activityBadgeService.findActivityBadgesByBadgeId(badge.getId());
 		List<ActivityBadge> userCompletedActivityBadge = activityBadgeService.findUserCompletedActivity(badge.getId(),
 				userOpenId);
 		if (userCompletedActivityBadge.size() >= badge.getCompletedRequiredActivities()) {
-			int allRequiredActivities = 0;
+//			int allRequiredActivities = 0;
 			int userCompletedRequired = 0;
-			allRequiredActivities = countRequiredActivities(activityBadges);
+//			allRequiredActivities = countRequiredActivities(activityBadges);
 			userCompletedRequired = countRequiredActivities(userCompletedActivityBadge);
-			if (userCompletedRequired > 0 && userCompletedRequired == allRequiredActivities) {
+			if (userCompletedRequired >= 0 && userCompletedRequired >= badge.getCoreActivities()) {
 				return true;
 			}
 		}
