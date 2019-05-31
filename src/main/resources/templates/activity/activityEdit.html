@@ -16,7 +16,7 @@
   }
 </script>
 <br/>
-<h1>修改用户</h1>
+<h1>修改活动</h1>
 <br/><br/>
 <div class="with:80%">
     <form class="form-horizontal"   th:action="@{/editActivity}" th:object="${activity}"  method="post">
@@ -46,10 +46,10 @@
             </div>
         </div>
         <div class="form-group ">
-	        <label for="requiredActivity" class="col-sm-2 control-label">勋章重要活动</label>
+	        <label for="requiredActivity" class="col-sm-2 control-label">必须参与的活动</label>
 	        <div class="col-sm-10">
-	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="yes" th:checked="${activityBadge.requiredActivity == 'yes'}"/>
-	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="no" th:checked="${activityBadge.requiredActivity == 'no'}"/>
+	            <input type="radio" th:name="requiredActivity" th:value="yes" th:text="是" th:checked="${activityBadge.requiredActivity == 'yes'}"/>
+	            <input type="radio" th:name="requiredActivity" th:value="no" th:text="否" th:checked="${activityBadge.requiredActivity == 'no'}"/>
 	        </div>
 	    </div>
 	    <div class="form-group ">
@@ -62,7 +62,7 @@
 	        </div>
 	    </div>
         <div class="form-group">
-            <label for="requiredAttendTimes" class="col-sm-2 control-label" >Required Attendance Times</label>
+            <label for="requiredAttendTimes" class="col-sm-2 control-label" >完成活动需要参加次数</label>
             <div class="col-sm-10">
                 <input type="number" class="requiredAttendTimes" name="requiredAttendTimes" id="requiredAttendTimes"  th:value="*{requiredAttendTimes}" placeholder="requiredAttendanceTimes"/>
             </div>
