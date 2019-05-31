@@ -29,4 +29,6 @@ public interface ActivityService {
 
 	List<ActivityDto> findActivitiesDtoByBadgeId(long badgeId);
 
+	ActivityDto findUserActivityDto(long activityId, String userOpenId);
+
 }
