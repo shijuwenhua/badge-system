@@ -79,7 +79,12 @@ public class ActivityServiceImpl implements ActivityService{
 		// TODO Auto-generated method stub
 		return activityRepository.findActivitiesDtoByBadgeId(badgeId);
 	}
-
+	
+	@Override
+	public ActivityDto findUserActivityDto(long activityId, String userOpenId) {
+		// TODO Auto-generated method stub
+		return activityRepository.findUserActivityDto(activityId, userOpenId);
+	}
 }
 
 

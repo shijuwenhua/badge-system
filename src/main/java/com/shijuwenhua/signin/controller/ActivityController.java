@@ -103,18 +103,21 @@ public class ActivityController {
 		return "activity/activityEdit";
 	}
 
+	//ALTER TABLE `dengdeng`.`badge` CHANGE COLUMN `description` `description` VARCHAR(255) CHARACTER SET 'utf8' NOT NULL ;
 	@RequestMapping("/editActivity")
 	public String edit(Activity activity, long badgeTypeId, int requiredAttendTimes, String requiredActivity) {
 		activityService.edit(activity);
 		ActivityBadge activityBadge = activityBadgeService.findActivityBadgesByActivityId(activity.getId());
 		long beforeEditBadgeId = activityBadge.getBadgeId();
+		String beforeRequiredActivity = activityBadge.getRequiredActivity();
 		activityBadge.setBadgeId(badgeTypeId);
 		activityBadge.setRequiredAttendTimes(requiredAttendTimes);
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.edit(activityBadge);
 		if (badgeTypeId != beforeEditBadgeId)
 			badgeService.updateBadgeCoreActivities(badgeTypeId);
-		badgeService.updateBadgeCoreActivities(activityBadge.getBadgeId());
+		if(!beforeRequiredActivity.equals(requiredActivity))
+			badgeService.updateBadgeCoreActivities(activityBadge.getBadgeId());
 		return "redirect:/listActivity";
 	}
 

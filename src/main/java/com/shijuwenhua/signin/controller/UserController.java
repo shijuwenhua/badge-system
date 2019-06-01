@@ -67,6 +67,12 @@ public class UserController {
 	public Badge getUpgradeBadges(@PathVariable("badgeId") long badgeId) {
 		return badgeService.getUpgradeBadge(badgeId);
 	}
+	
+	@RequestMapping("/getUserActivty/{userOpenId}/{activityId}")
+	@ResponseBody
+	public ActivityDto getUserActivty(@PathVariable("activityId") long activityId, @PathVariable("userOpenId") String userOpenId) {
+		return activityService.findUserActivityDto(activityId, userOpenId);
+	}
 
 	@RequestMapping("/getUserBadgesDetailList/{userOpenId}")
 	@ResponseBody
@@ -170,11 +176,27 @@ public class UserController {
 		return getUserBadgesDetailList(userOpenId);
 	}
 
-	@RequestMapping("/attendActivity/{openId}/{activityId}")
+	@RequestMapping("/attendActivityReutrnBadgeDetail/{openId}/{activityId}")
 	@ResponseBody
-	public BadgeDetail attendActivity(@PathVariable("openId") String userOpenId,
+	public BadgeDetail attendActivityReutrnBadgeDetail(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId) throws Exception {
 
+		Badge badge = attendActivity(userOpenId, activityId);
+
+		return getUserBadgesDetail(userOpenId, badge.getId());
+	}
+	
+	@RequestMapping("/attendActivityReutrnActivityDetail/{openId}/{activityId}")
+	@ResponseBody
+	public ActivityDto attendActivityReutrnActivityDetail(@PathVariable("openId") String userOpenId,
+			@PathVariable("activityId") Long activityId) throws Exception {
+		
+		attendActivity(userOpenId, activityId);
+		
+		return getUserActivty(activityId, userOpenId);
+	}
+
+	private Badge attendActivity(String userOpenId, Long activityId) throws Exception {
 		Badge badge = checkIsExist(activityId);
 
 		UserActivity userActivity = checkAndCreateUserActivity(userOpenId, activityId, badge);
@@ -192,8 +214,7 @@ public class UserController {
 				userActivityService.save(userActivity);
 			}
 		}
-
-		return getUserBadgesDetail(userOpenId, badge.getId());
+		return badge;
 	}
 
 	private UserActivity checkAndCreateUserActivity(String userOpenId, Long activityId, Badge badge) {
