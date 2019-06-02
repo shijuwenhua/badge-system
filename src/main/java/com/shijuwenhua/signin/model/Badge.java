@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 
+import com.shijuwenhua.signin.constant.StatusConstants;
+
 @Entity
 @Table
 public class Badge {
@@ -65,7 +67,7 @@ public class Badge {
 	}
 
 	public String getIcon() {
-		return icon;
+		return StatusConstants.BADGE_ICON_LOCATION + icon;
 	}
 
 	public void setIcon(String icon) {

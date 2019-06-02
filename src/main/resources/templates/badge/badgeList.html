@@ -14,7 +14,7 @@
         <thead>
         <tr>
             <th>Badge Id</th>
-            <th>Icon</th>
+            <th align="center">Icon</th>
             <th>Title</th>
             <th>Description</th>
             <th>参与完成活动数量</th>
@@ -27,7 +27,7 @@
         <tbody>
         <tr  th:each="badge : ${badges}">
             <th scope="row" th:text="${badge.id}">1</th>
-            <td th:text="${badge.icon}">icon</td>
+            <td ><img th:src="@{${badge.icon}}"/></td>
             <td th:text="${badge.title}">neo</td>
             <td th:text="${badge.description}">Otto</td>
             <td th:text="${badge.completedRequiredActivities}">Otto</td>
