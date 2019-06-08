@@ -2,9 +2,12 @@ package com.shijuwenhua.signin.utils;
 
 import java.security.MessageDigest;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,12 +15,24 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+@Component
+@Configuration
 public class LoginUtils{
 
     private static final long serialVersionUID = 1L;
 
-    private static final String APPID = "wxb29a76a9a9b2015b";  
-    private static final String SECRET = "d6cee862f80ae7634adf73db47262a48";
+    private static String APPID = "";
+    private static String SECRET = "";
+
+    @Value("${weapp.id}")
+    public void setAppId(String app_id){
+        this.APPID = app_id;
+    }
+
+    @Value("${weapp.secret}")
+    public void setAppSecret(String app_secret){
+        this.SECRET = app_secret;
+    }
 
     public static String getSha1(String str){
         if(StringUtils.isEmpty(str)){
