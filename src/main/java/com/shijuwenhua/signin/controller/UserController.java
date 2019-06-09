@@ -240,7 +240,7 @@ public class UserController {
 		return userActivity;
 	}
 
-	private Badge checkIsExist(Long activityId) throws Exception {
+	public Badge checkIsExist(Long activityId) throws Exception {
 		if (activityService.findActivityById(activityId) == null)
 			throw new Exception("Cannot find the activity");
 		Badge badge = badgeService.findBadgesByActivityId(activityId);
@@ -304,7 +304,7 @@ public class UserController {
 		return count;
 	}
 
-	private UserActivity attendActivityAndBadge(String userOpenId, Long activityId, Badge badge) {
+	public UserActivity attendActivityAndBadge(String userOpenId, Long activityId, Badge badge) {
 		UserActivity userActivity;
 		userActivity = createUserActivity(userOpenId, activityId);
 		if (userBadgeRepository.findByBadgeIdAndUserId(badge.getId(), userOpenId) == null)
