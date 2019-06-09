@@ -226,9 +226,9 @@ public class UserController {
 			user.setOpenId(userOpenId);
 			user.setName(userOpenId);
 			userService.save(user);
-			if(activityId!=Long.parseLong("0")) {
-				Badge defaultBadge = checkIsExist(Long.parseLong("0"));
-				userActivityService.save(attendActivityAndBadge(userOpenId, Long.parseLong("0"), defaultBadge));
+			if(activityId!=Long.parseLong("-1")) {
+				Badge defaultBadge = checkIsExist(Long.parseLong("-1"));
+				userActivityService.save(attendActivityAndBadge(userOpenId, Long.parseLong("-1"), defaultBadge));
 			}
 			userActivity = attendActivityAndBadge(userOpenId, activityId, badge);
 		} else {
