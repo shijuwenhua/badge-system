@@ -25,6 +25,7 @@ public class FileSystemStorageService implements StorageService {
 	@Autowired
 	public FileSystemStorageService() {
 		this.rootLocation = Paths.get("/usr/java/tomcat/apache-tomcat-8.5.16/webapps/pic/");
+//		this.rootLocation = Paths.get("D:\\");
 	}
 
 	@Override

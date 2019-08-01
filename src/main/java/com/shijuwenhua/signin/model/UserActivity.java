@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Version;
 
 @Entity
 @Table
@@ -28,6 +29,9 @@ public class UserActivity {
 	
 	@Column(nullable = false)
 	private String status;
+	
+	@Version
+	private long version;
 	
 	@Column
 	private String achievementTime;
@@ -78,6 +82,14 @@ public class UserActivity {
 
 	public void setAchievementTime(String achievementTime) {
 		this.achievementTime = achievementTime;
+	}
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
 	}
 
 }

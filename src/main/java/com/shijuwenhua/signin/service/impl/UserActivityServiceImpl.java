@@ -1,7 +1,6 @@
 package com.shijuwenhua.signin.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,13 @@ import com.shijuwenhua.signin.repository.UserActivityRepository;
 import com.shijuwenhua.signin.service.UserActivityService;
 
 @Service
-public class UserActivityServiceImpl implements UserActivityService{
-    
-    @Autowired
-    private UserActivityRepository userActivityRepository;
-    
-    @Autowired
-    private ActivityRepository activityRepository;
+public class UserActivityServiceImpl implements UserActivityService {
+
+	@Autowired
+	private UserActivityRepository userActivityRepository;
+
+	@Autowired
+	private ActivityRepository activityRepository;
 
 	@Override
 	public List<UserActivity> getUserActivityList() {
@@ -48,7 +47,7 @@ public class UserActivityServiceImpl implements UserActivityService{
 	}
 
 	@Override
-	public void edit(UserActivity userActivity) {
+	public void update(UserActivity userActivity) {
 		// TODO Auto-generated method stub
 		userActivityRepository.save(userActivity);
 	}
@@ -56,13 +55,13 @@ public class UserActivityServiceImpl implements UserActivityService{
 	@Override
 	public void delete(long activityUserId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteByActivityIdAndUserId(long activityId, long userOpenId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -88,6 +87,17 @@ public class UserActivityServiceImpl implements UserActivityService{
 		// TODO Auto-generated method stub
 		return activityRepository.findUADtoByBadgeIdAndUserOpenId(badgeId, userOpenId, queryStatus);
 	}
+
+	@Override
+	public int updateCommonActivity(UserActivity commonUserActivity) {
+		// TODO Auto-generated method stub
+		return userActivityRepository.updateCommonActivity(commonUserActivity.getId(), commonUserActivity.getAttendTimes(),
+				commonUserActivity.getVersion(), commonUserActivity.getStatus(), commonUserActivity.getAchievementTime());
+	}
+	
+	@Override
+	public int updateUserCommonActivities(long activityId, String status, String achievementTime) {
+		// TODO Auto-generated method stub
+		return userActivityRepository.updateUserCommonActivities(activityId, status, achievementTime);
+	}
 }
-
-

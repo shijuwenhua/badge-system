@@ -35,8 +35,8 @@ public class LoginController {
 				user = new User();
 				user.setOpenId(openId);
 				userService.save(user);
-				Badge defaultBadge = userController.checkIsExist(Long.parseLong("-1"));
-				userActivityService.save(userController.attendActivityAndBadge(openId, Long.parseLong("-1"), defaultBadge));
+				Badge defaultBadge = userController.checkIsExist(Long.parseLong("-1")).getFirst();
+				userActivityService.save(userController.attendActivityAndBadge(openId, Long.parseLong("-1"), defaultBadge.getId()));
 			}
 		}
 		return openId;

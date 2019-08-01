@@ -7,15 +7,20 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.util.StringUtils;
 
 import com.shijuwenhua.signin.constant.StatusConstants;
 import com.shijuwenhua.signin.mapper.DtoMapper;
+import com.shijuwenhua.signin.model.Activity;
 import com.shijuwenhua.signin.model.ActivityBadge;
 import com.shijuwenhua.signin.model.ActivityDto;
 import com.shijuwenhua.signin.model.Badge;
@@ -33,6 +38,7 @@ import com.shijuwenhua.signin.service.UserService;
 
 @Controller
 public class UserController {
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Resource
 	private UserService userService;
@@ -56,6 +62,8 @@ public class UserController {
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM/dd HH:mm:ss");
 
+	private int retryTimes = 0;
+
 	@RequestMapping("/getAllUsers")
 	@ResponseBody
 	public List<User> getAllUsers() {
@@ -67,10 +75,11 @@ public class UserController {
 	public Badge getUpgradeBadges(@PathVariable("badgeId") long badgeId) {
 		return badgeService.getUpgradeBadge(badgeId);
 	}
-	
+
 	@RequestMapping("/getUserActivty/{userOpenId}/{activityId}")
 	@ResponseBody
-	public ActivityDto getUserActivty(@PathVariable("activityId") long activityId, @PathVariable("userOpenId") String userOpenId) {
+	public ActivityDto getUserActivty(@PathVariable("activityId") long activityId,
+			@PathVariable("userOpenId") String userOpenId) {
 		return activityService.findUserActivityDto(activityId, userOpenId);
 	}
 
@@ -169,55 +178,107 @@ public class UserController {
 	public List<BadgeDetail> joinActivity(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId) throws Exception {
 
-		Badge badge = checkIsExist(activityId);
+		Badge badge = checkIsExist(activityId).getFirst();
 
-		userActivityService.save(checkAndCreateUserActivity(userOpenId, activityId, badge));
+		userActivityService.save(checkAndCreateUserActivity(userOpenId, activityId, badge.getId()));
 
 		return getUserBadgesDetailList(userOpenId);
 	}
 
-	@RequestMapping("/attendActivityReutrnBadgeDetail/{openId}/{activityId}")
+	@RequestMapping("/attendActivityReutrnBadgeDetail/{openId}/{activityId}/{attendTimes}")
 	@ResponseBody
 	public BadgeDetail attendActivityReutrnBadgeDetail(@PathVariable("openId") String userOpenId,
-			@PathVariable("activityId") Long activityId) throws Exception {
+			@PathVariable("activityId") Long activityId, @PathVariable("attendTimes") int attendTimes)
+			throws Exception {
 
-		Badge badge = attendActivity(userOpenId, activityId);
+		Badge badge = attendActivity(userOpenId, activityId, attendTimes);
 
 		return getUserBadgesDetail(userOpenId, badge.getId());
 	}
-	
-	@RequestMapping("/attendActivityReutrnActivityDetail/{openId}/{activityId}")
+
+	@RequestMapping("/attendActivityReutrnActivityDetail/{openId}/{activityId}/{attendTimes}")
 	@ResponseBody
 	public ActivityDto attendActivityReutrnActivityDetail(@PathVariable("openId") String userOpenId,
-			@PathVariable("activityId") Long activityId) throws Exception {
-		
-		attendActivity(userOpenId, activityId);
-		
+			@PathVariable("activityId") Long activityId, @PathVariable("attendTimes") int attendTimes)
+			throws Exception {
+
+		attendActivity(userOpenId, activityId, attendTimes);
+
 		return getUserActivty(activityId, userOpenId);
 	}
 
-	private Badge attendActivity(String userOpenId, Long activityId) throws Exception {
-		Badge badge = checkIsExist(activityId);
+	private Badge attendActivity(String userOpenId, Long activityId, int attendTimes) throws Exception {
+		Pair<Badge, String> checkResult = checkIsExist(activityId);
+		Badge badge = checkResult.getFirst();
 
-		UserActivity userActivity = checkAndCreateUserActivity(userOpenId, activityId, badge);
+		UserActivity userActivity = checkAndCreateUserActivity(userOpenId, activityId, badge.getId());
 
-		userActivity.setAttendTimes(userActivity.getAttendTimes() + 1);
-
-		if (StatusConstants.PROCESSING.equals(userActivity.getStatus())) {
-			String activityStatus = activityService.checkActivityStatus(activityId, userActivity.getAttendTimes());
-			userActivity.setStatus(activityStatus);
-			if (StatusConstants.COMPLETED.equals(activityStatus)) {
-				userActivity.setAchievementTime(LocalDateTime.now().format(formatter));
-				userActivityService.save(userActivity);
-				checkBadge(badge, activityStatus, userOpenId);
-			} else {
-				userActivityService.save(userActivity);
-			}
+		if (StringUtils.equals(StatusConstants.COMMON_SCRIPTURE, checkResult.getSecond())) {
+			userActivity.setAttendTimes(userActivity.getAttendTimes() + attendTimes);
+			userActivityService.save(userActivity);
+			commonActivity(userOpenId, activityId, badge, attendTimes);
+		} else {
+			normalActivity(userOpenId, activityId, badge, userActivity, attendTimes, false);
 		}
 		return badge;
 	}
 
-	private UserActivity checkAndCreateUserActivity(String userOpenId, long activityId, Badge badge) throws Exception {
+	private void commonActivity(String userOpenId, Long activityId, Badge badge, int attendTimes) {
+		try {
+			UserActivity commonUserActivity = userActivityService.findByUserIdAndActivityId(activityId,
+					StatusConstants.COMMON_SCRIPTURE);
+			normalActivity(userOpenId, activityId, badge, commonUserActivity, attendTimes, true);
+		} catch (Exception ex) {
+			logger.error("Error in update Common Activity. Start retry update the Common Activity.");
+			if (retryTimes < 1) {
+				retryTimes++;
+				commonActivity(userOpenId, activityId, badge, attendTimes);
+			}
+		}
+
+	}
+
+	private void normalActivity(String userOpenId, Long activityId, Badge badge, UserActivity userActivity,
+			int attendTimes, boolean isCommonActivity) {
+		if (StatusConstants.PROCESSING.equals(userActivity.getStatus())) {
+			userActivity.setAttendTimes(userActivity.getAttendTimes() + attendTimes);
+			String activityStatus = activityService.checkActivityStatus(activityId, userActivity.getAttendTimes());
+			userActivity.setStatus(activityStatus);
+			if (StatusConstants.COMPLETED.equals(activityStatus)) {
+				updateActivityAndBadge(userOpenId, activityId, badge, userActivity, isCommonActivity, activityStatus);
+			} else {
+				userActivityService.save(userActivity);
+			}
+		} else {
+			userActivityService.save(userActivity);
+		}
+	}
+
+	private void updateActivityAndBadge(String userOpenId, Long activityId, Badge badge, UserActivity userActivity,
+			boolean isCommonActivity, String activityStatus) {
+		String achievementTime = LocalDateTime.now().format(formatter);
+		userActivity.setAchievementTime(achievementTime);
+		if (isCommonActivity) {
+//			userActivityService.updateCommonActivity(userActivity);
+			userActivityService.update(userActivity);
+			try {
+				userBadgeRepository.updateCommonUserBadges(badge.getId(), StatusConstants.COMPLETED, achievementTime);
+				userActivityService.updateUserCommonActivities(activityId, StatusConstants.COMPLETED, achievementTime);
+			} catch (Exception ex) {
+				logger.error("Error in update all user common Activity and Badge. Retry the proccess");
+				if (retryTimes < 2) {
+					retryTimes++;
+					updateActivityAndBadge(userOpenId, activityId, badge, userActivity, isCommonActivity,
+							activityStatus);
+				}
+			}
+		} else {
+			userActivityService.update(userActivity);
+			checkBadge(badge, activityStatus, userOpenId);
+		}
+	}
+
+	public UserActivity checkAndCreateUserActivity(String userOpenId, long activityId, long badgeId) throws Exception {
 		User user = userService.findUserByOpenId(userOpenId);
 		UserActivity userActivity = new UserActivity();
 
@@ -226,27 +287,29 @@ public class UserController {
 			user.setOpenId(userOpenId);
 			user.setName(userOpenId);
 			userService.save(user);
-			if(activityId!=Long.parseLong("-1")) {
-				Badge defaultBadge = checkIsExist(Long.parseLong("-1"));
-				userActivityService.save(attendActivityAndBadge(userOpenId, Long.parseLong("-1"), defaultBadge));
+			if (activityId != Long.parseLong("-1")) {
+				Badge defaultBadge = checkIsExist(Long.parseLong("-1")).getFirst();
+				userActivityService
+						.save(attendActivityAndBadge(userOpenId, Long.parseLong("-1"), defaultBadge.getId()));
 			}
-			userActivity = attendActivityAndBadge(userOpenId, activityId, badge);
+			userActivity = attendActivityAndBadge(userOpenId, activityId, badgeId);
 		} else {
 			userActivity = userActivityService.findByUserIdAndActivityId(activityId, userOpenId);
 			if (userActivity == null) {
-				userActivity = attendActivityAndBadge(userOpenId, activityId, badge);
+				userActivity = attendActivityAndBadge(userOpenId, activityId, badgeId);
 			}
 		}
 		return userActivity;
 	}
 
-	public Badge checkIsExist(Long activityId) throws Exception {
-		if (activityService.findActivityById(activityId) == null)
+	public Pair<Badge, String> checkIsExist(Long activityId) throws Exception {
+		Activity activity = activityService.findActivityById(activityId);
+		if (activity == null)
 			throw new Exception("Cannot find the activity");
 		Badge badge = badgeService.findBadgesByActivityId(activityId);
 		if (badge == null)
 			throw new Exception("Cannot find the activity related badge");
-		return badge;
+		return Pair.of(badge, activity.getType());
 	}
 
 	private void checkBadge(Badge badge, String activityStatus, String userOpenId) {
@@ -304,11 +367,11 @@ public class UserController {
 		return count;
 	}
 
-	public UserActivity attendActivityAndBadge(String userOpenId, Long activityId, Badge badge) {
+	public UserActivity attendActivityAndBadge(String userOpenId, Long activityId, long badgeId) {
 		UserActivity userActivity;
 		userActivity = createUserActivity(userOpenId, activityId);
-		if (userBadgeRepository.findByBadgeIdAndUserId(badge.getId(), userOpenId) == null)
-			userBadgeRepository.save(createUserBadge(userOpenId, badge.getId()));
+		if (userBadgeRepository.findByBadgeIdAndUserId(badgeId, userOpenId) == null)
+			userBadgeRepository.save(createUserBadge(userOpenId, badgeId));
 		return userActivity;
 	}
 
@@ -328,6 +391,5 @@ public class UserController {
 		userBadge.setUserOpenId(userOpenId);
 		userBadge.setObtainTimes(0);
 		return userBadge;
-
 	}
 }

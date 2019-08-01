@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import com.shijuwenhua.signin.constant.StatusConstants;
 import com.shijuwenhua.signin.model.Activity;
@@ -21,6 +22,7 @@ import com.shijuwenhua.signin.service.ActivityBadgeService;
 import com.shijuwenhua.signin.service.ActivityService;
 import com.shijuwenhua.signin.service.BadgeService;
 import com.shijuwenhua.signin.service.StorageService;
+import com.shijuwenhua.signin.service.UserActivityService;
 import com.shijuwenhua.signin.service.UserService;
 
 @Controller
@@ -31,12 +33,18 @@ public class ActivityController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserController userController;
 
 	@Autowired
 	private BadgeService badgeService;
 
 	@Autowired
 	private ActivityBadgeService activityBadgeService;
+	
+	@Autowired
+	private UserActivityService userActivityService;
 
 	@Autowired
 	private StorageService storageService;
@@ -93,6 +101,9 @@ public class ActivityController {
 		activityBadge.setRequiredActivity(requiredActivity);
 		activityBadgeService.save(activityBadge);
 		badgeService.updateBadgeCoreActivities(badgeTypeId);
+		if(StringUtils.equals(StatusConstants.COMMON_SCRIPTURE, activity.getType())) {
+			userActivityService.save(userController.checkAndCreateUserActivity(StatusConstants.COMMON_SCRIPTURE, activity.getId(), badgeTypeId));
+		}
 		return "redirect:/listActivity";
 	}
 	
