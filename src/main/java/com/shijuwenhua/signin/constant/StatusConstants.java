@@ -11,8 +11,9 @@ public class StatusConstants {
 	public static final String ACTIVITY_ICON_LOCATION = "http://106.14.0.107/pic/activity/";
 //	public static final String ACTIVITY_ICON_STORE_LOCATION = "D:\\";
 //	public static final String BADGE_ICON_STORE_LOCATION = "D:\\";
-	public static final String ACTIVITY_ICON_STORE_LOCATION = "/usr/java/tomcat/apache-tomcat-8.5.16/webapps/pic/activity";
+	public static final String ACTIVITY_ICON_STORE_LOCATION = "/usr/java/tomcat/apache-tomcat-8.5.16/webapps/pic/activiDty";
 	public static final String BADGE_ICON_STORE_LOCATION = "/usr/java/tomcat/apache-tomcat-8.5.16/webapps/pic/badge";
 	
 	public static final String COMMON_SCRIPTURE = "commonScripture";
 }
+

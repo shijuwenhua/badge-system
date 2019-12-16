@@ -83,6 +83,11 @@ public class ActivityController {
 		model.addAttribute("activitys", activitys);
 		return "activity/activityList";
 	}
+	
+	@RequestMapping("/menu")
+	public String menu(Model model) {
+		return "menu";
+	}
 
 	@RequestMapping("/toAddActivity")
 	public String toAdd(Model model) {

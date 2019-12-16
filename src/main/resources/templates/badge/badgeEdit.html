@@ -18,11 +18,11 @@
   }
   function checkaction(v){ 
 		if(v==0){ 
-			document.badgeForm.action="http://106.14.0.107/signin/editBadge"; 
+			document.badgeForm.action="http://106.14.0.107/signinTest/editBadge"; 
 			document.getElementById("showPic").style.display="";
 			document.getElementById("uploadPic").style.display="none";
 		}else{ 
-			document.badgeForm.action="http://106.14.0.107/signin/editBadgeWithPic"; 
+			document.badgeForm.action="http://106.14.0.107/signinTest/editBadgeWithPic"; 
 			document.getElementById("showPic").style.display="none";
 			document.getElementById("uploadPic").style.display="";
 		} 
@@ -61,7 +61,7 @@
 <h1>修改勋章</h1>
 <br/><br/>
 <div class="with:80%">
-    <form class="form-horizontal" name="badgeForm" action="http://106.14.0.107/signin/editBadge" th:object="${badge}"  method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="badgeForm" action="http://106.14.0.107/signinTest/editBadge" th:object="${badge}"  method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="*{id}" />
         <div class="form-group">
             <label for="title" class="col-sm-2 control-label">Title</label>

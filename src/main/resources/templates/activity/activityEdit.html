@@ -18,11 +18,11 @@
   }
   function checkaction(v){ 
 		if(v==0){ 
-			document.activityForm.action="http://106.14.0.107/signin/editActivity"; 
+			document.activityForm.action="http://106.14.0.107/signinTest/editActivity"; 
 			document.getElementById("showPic").style.display="";
 			document.getElementById("uploadPic").style.display="none";
 		}else{ 
-			document.activityForm.action="http://106.14.0.107/signin/editActivityWithPic"; 
+			document.activityForm.action="http://106.14.0.107/signinTest/editActivityWithPic"; 
 			document.getElementById("showPic").style.display="none";
 			document.getElementById("uploadPic").style.display="";
 		} 
@@ -61,7 +61,7 @@ $(function() {
 <h1>修改活动</h1>
 <br/><br/>
 <div class="with:80%">
-    <form class="form-horizontal" name="activityForm" action="http://106.14.0.107/signin/editActivity" th:object="${activity}"  method="post"  enctype="multipart/form-data">
+    <form class="form-horizontal" name="activityForm" action="http://106.14.0.107/signinTest/editActivity" th:object="${activity}"  method="post"  enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="*{id}" />
         <div class="form-group">
             <label for="creator" class="col-sm-2 control-label">Creator</label>

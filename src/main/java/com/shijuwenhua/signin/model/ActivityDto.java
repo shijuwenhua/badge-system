@@ -11,8 +11,10 @@ public class ActivityDto {
 	private String type;
 	private String status;
 	private int attendTimes;
+	private String comments;
+	private int commonTotalAttend;
 
-	public ActivityDto(Activity activity, String status, int attendTimes) {
+	public ActivityDto(Activity activity, String status, int attendTimes, String comments, int commonTotalAttend) {
 		this.id = activity.getId();
 		this.creator = activity.getCreator();
 		this.title = activity.getTitle();
@@ -22,6 +24,8 @@ public class ActivityDto {
 		this.type = activity.getType();
 		this.status = status;
 		this.attendTimes = attendTimes;
+		this.comments = comments;
+		this.commonTotalAttend = commonTotalAttend;
 	}
 	
 	public ActivityDto(Activity activity) {
@@ -104,5 +108,21 @@ public class ActivityDto {
 
 	public void setAttendTimes(int attendTimes) {
 		this.attendTimes = attendTimes;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public int getCommonTotalAttend() {
+		return commonTotalAttend;
+	}
+
+	public void setCommonTotalAttend(int commonTotalAttend) {
+		this.commonTotalAttend = commonTotalAttend;
 	}
 }

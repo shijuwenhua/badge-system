@@ -35,6 +35,12 @@ public class UserActivity {
 	
 	@Column
 	private String achievementTime;
+	
+	@Column
+	private String comments;
+	
+	@Column
+	private int commonTotalAttend;
 
 	public long getActivityId() {
 		return activityId;
@@ -90,6 +96,22 @@ public class UserActivity {
 
 	public void setVersion(long version) {
 		this.version = version;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public int getCommonTotalAttend() {
+		return commonTotalAttend;
+	}
+
+	public void setCommonTotalAttend(int commonTotalAttend) {
+		this.commonTotalAttend = commonTotalAttend;
 	}
 
 }
