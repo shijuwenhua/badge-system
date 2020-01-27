@@ -14,7 +14,7 @@ public class ActivityDto {
 	private String comments;
 	private int commonTotalAttend;
 
-	public ActivityDto(Activity activity, String status, int attendTimes, String comments, int commonTotalAttend) {
+	public ActivityDto(Activity activity, String status, int attendTimes, String comments, Integer commonTotalAttend) {
 		this.id = activity.getId();
 		this.creator = activity.getCreator();
 		this.title = activity.getTitle();
@@ -25,7 +25,8 @@ public class ActivityDto {
 		this.status = status;
 		this.attendTimes = attendTimes;
 		this.comments = comments;
-		this.commonTotalAttend = commonTotalAttend;
+		// avoid legacy data commonTotalAttend null issue
+		this.commonTotalAttend = commonTotalAttend == null ? 0: commonTotalAttend.intValue();
 	}
 	
 	public ActivityDto(Activity activity) {

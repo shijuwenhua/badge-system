@@ -2,6 +2,7 @@ package com.shijuwenhua.signin.controller;
 
 import javax.annotation.Resource;
 
+import com.shijuwenhua.signin.constant.StatusConstants;
 import com.shijuwenhua.signin.service.UserActivityService;
 import com.shijuwenhua.signin.service.UserService;
 import com.shijuwenhua.signin.utils.LoginUtils;
@@ -17,7 +18,9 @@ import com.shijuwenhua.signin.model.User;
 public class QRcodeController {
     @RequestMapping(value = {"/getQRCode"}, produces="image/jpeg")
     @ResponseBody
-    public byte[] getOpenIdfromCode(@RequestParam(value = "activity_id", required = true) String activity_id) throws NumberFormatException, Exception {
-		return LoginUtils.getQRCode(activity_id);
+    public byte[] getQRCode(@RequestParam(value = "activity_id", required = true) String activityId,
+                                    @RequestParam(value = "activity_type", required = true) String activityType) throws NumberFormatException, Exception {
+		boolean isComm =  StatusConstants.COMMON_SCRIPTURE.equals(activityType);
+        return LoginUtils.getQRCode(activityId, isComm);
     }
 }

@@ -123,7 +123,7 @@ public class LoginUtils{
         }
     }
 
-    public static byte[] getQRCode(String activity_id) {
+    public static byte[] getQRCode(String activityId, boolean isComm) {
         if( null == accessToken ) {
             setAccessToken();
         }
@@ -133,7 +133,7 @@ public class LoginUtils{
         String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token="+accessToken;
         RestTemplate restTemplate = new RestTemplate();
         HashMap<String, String> request = new HashMap<>();
-        request.put("scene", "activity_id=" + activity_id);
+        request.put("scene", "activity_id=" + activityId + "&is_comm=" + isComm);
         request.put("page", "pages/badge-detail/badge-detail");
         String json = new GsonBuilder().disableHtmlEscaping().create().toJson(request);
         //JsonObject jsonObject =new JsonParser().parse(json).getAsJsonObject();
@@ -156,7 +156,7 @@ public class LoginUtils{
                 System.out.println("errcode: " + errCode + ", errmsg: " + errMsg);
                 if ("40001".equals(errCode) || "41001".equals(errCode) || "42001".equals(errCode)) {
                     setAccessToken();
-                    return getQRCode(activity_id);
+                    return getQRCode(activityId, isComm);
                 }
             }
         }
