@@ -119,6 +119,13 @@ public class UserController {
 		for (ActivityDto userActivity : userActivities) {
 			for (int n = 0; n < badgeActivities.size(); n++) {
 				if (userActivity.getId() == badgeActivities.get(n).getId()) {
+					// Getting commonTotalAttend from user activity record is not real-time (only the last updated user will get correct number)
+					// So get the number from commScripture record
+					if (StatusConstants.COMMON_SCRIPTURE.equals(userActivity.getType())) {
+						UserActivity commonUserActivity = userActivityService.findByUserIdAndActivityId(userActivity.getId(),
+								StatusConstants.COMMON_SCRIPTURE);
+						userActivity.setCommonTotalAttend(commonUserActivity.getAttendTimes());
+					}
 					badgeActivities.set(n, userActivity);
 				}
 			}
