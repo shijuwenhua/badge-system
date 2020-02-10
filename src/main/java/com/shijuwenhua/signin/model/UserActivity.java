@@ -40,7 +40,7 @@ public class UserActivity {
 	private String comments;
 	
 	@Column
-	private int commonTotalAttend;
+	private Integer commonTotalAttend;
 
 	public long getActivityId() {
 		return activityId;
@@ -110,7 +110,7 @@ public class UserActivity {
 		return commonTotalAttend;
 	}
 
-	public void setCommonTotalAttend(int commonTotalAttend) {
+	public void setCommonTotalAttend(Integer commonTotalAttend) {
 		this.commonTotalAttend = commonTotalAttend;
 	}
 

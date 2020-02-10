@@ -197,7 +197,7 @@ public class UserController {
 	@ResponseBody
 	public BadgeDetail attendActivityReutrnBadgeDetail(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId, @PathVariable("attendTimes") int attendTimes,
-			@RequestParam(value = "comments", required = true) String comments) throws Exception {
+			@RequestParam(value = "comments", required = false) String comments) throws Exception {
 
 		Badge badge = attendActivity(userOpenId, activityId, attendTimes, comments);
 
@@ -208,7 +208,7 @@ public class UserController {
 	@ResponseBody
 	public ActivityDto attendActivityReutrnActivityDetail(@PathVariable("openId") String userOpenId,
 			@PathVariable("activityId") Long activityId, @PathVariable("attendTimes") int attendTimes,
-			@RequestParam(value = "comments", required = true) String comments) throws Exception {
+			@RequestParam(value = "comments", required = false) String comments) throws Exception {
 
 		attendActivity(userOpenId, activityId, attendTimes, comments);
 
@@ -224,7 +224,7 @@ public class UserController {
 
 		if (StringUtils.equals(StatusConstants.COMMON_SCRIPTURE, checkResult.getSecond())) {
 			userActivity.setAttendTimes(userActivity.getAttendTimes() + attendTimes);
-			userActivity.setComments(comments);
+			if(comments != null) userActivity.setComments(comments);
 			UserActivity commonActivity = commonActivity(userOpenId, activityId, badge, attendTimes);
 			if(commonActivity != null) {
 				userActivity.setCommonTotalAttend(commonActivity.getAttendTimes());
